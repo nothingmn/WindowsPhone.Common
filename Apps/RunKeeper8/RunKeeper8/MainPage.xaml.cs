@@ -19,8 +19,6 @@ namespace RunKeeper8
         {
             InitializeComponent();
 
-            var trackingViewModel = RunKeeper8.DI.Container.Current.Get<ITrackingViewModel>();
-
             // Sample code to localize the ApplicationBar
             //BuildLocalizedApplicationBar();
         }
