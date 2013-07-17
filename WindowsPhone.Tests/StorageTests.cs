@@ -117,27 +117,27 @@ namespace WindowsPhone.Tests
 
         }
 
-        [TestMethod]
-        public void TestLoadMultiLevelFolders()
-        {
-            TestFileAt2LevelDown();
-            var group = DI.Container.Current.Get<IGroup>();
-            group.Load().Wait();
+        //[TestMethod]
+        //public void TestLoadMultiLevelFolders()
+        //{
+        //    TestFileAt2LevelDown();
+        //    var group = DI.Container.Current.Get<IGroup>();
+        //    group.Load().Wait();
 
-            Debug.WriteLine(group.Groups.Count);
-            Debug.WriteLine(group.Groups[0].Groups.Count);
-            Debug.WriteLine(group.Groups[0].Groups[0].Items.Count);
-            var item = group.Groups[0].Groups[0].Items[0];
-            item.Load().Wait();
-
-
-
-            string expected = System.Text.Encoding.UTF8.GetString(sharedContents, 0, sharedContents.Length);
-            string actual = System.Text.Encoding.UTF8.GetString(item.Contents, 0, item.Contents.Length);
-            Assert.AreEqual(expected, actual);
+        //    Debug.WriteLine(group.Groups.Count);
+        //    Debug.WriteLine(group.Groups[0].Groups.Count);
+        //    Debug.WriteLine(group.Groups[0].Groups[0].Items.Count);
+        //    var item = group.Groups[0].Groups[0].Items[0];
+        //    item.Load().Wait();
 
 
-        }
+
+        //    string expected = System.Text.Encoding.UTF8.GetString(sharedContents, 0, sharedContents.Length);
+        //    string actual = System.Text.Encoding.UTF8.GetString(item.Contents, 0, item.Contents.Length);
+        //    Assert.AreEqual(expected, actual);
+
+
+        //}
 
     }
 }
