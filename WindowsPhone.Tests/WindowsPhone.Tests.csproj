@@ -140,10 +140,6 @@
       <Project>{FDF7C488-3AD4-4D97-96E0-DE99CECB13FF}</Project>
       <Name>WindowsPhone.DI</Name>
     </ProjectReference>
-    <ProjectReference Include="..\WindowsPhone.Domain\WindowsPhone.Domain.csproj">
-      <Project>{2AA005D9-C108-4EC4-A8DC-711F98A037F1}</Project>
-      <Name>WindowsPhone.Domain</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion)\Microsoft.$(TargetFrameworkIdentifier).$(TargetFrameworkVersion).Overrides.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion)\Microsoft.$(TargetFrameworkIdentifier).CSharp.targets" />

@@ -110,10 +110,6 @@
       <Project>{062A43B3-4877-4BBF-87FE-F2E0D9D63122}</Project>
       <Name>WindowsPhone.Contracts</Name>
     </ProjectReference>
-    <ProjectReference Include="..\WindowsPhone.Domain\WindowsPhone.Domain.csproj">
-      <Project>{2AA005D9-C108-4EC4-A8DC-711F98A037F1}</Project>
-      <Name>WindowsPhone.Domain</Name>
-    </ProjectReference>
     <ProjectReference Include="..\WindowsPhone.Logging\WindowsPhone.Logging.csproj">
       <Project>{3E512359-8B49-4A8E-A6C1-87F1043A22F9}</Project>
       <Name>WindowsPhone.Logging</Name>

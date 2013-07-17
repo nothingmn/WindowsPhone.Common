@@ -16,6 +16,7 @@ namespace WindowsPhone.Storage
         public IStorageFolder Root
         {
             get { return _Root; }
+            set { _Root = value; }
         }
 
         private IStorageFolder _store;
