@@ -21,9 +21,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "RunKeeper8", "RunKeeper8", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RunKeeper8", "Apps\RunKeeper8\RunKeeper8\RunKeeper8.csproj", "{AA50FC1A-15E6-47FE-8F8A-B3DAD3DB2A47}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RunKeeper8.Contracts", "RunKeeper8.Contracts\RunKeeper8.Contracts.csproj", "{53E1BC4B-01AA-4E59-8384-F4160D8D168D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RunKeeper8.Contracts", "Apps\RunKeeper8\RunKeeper8.Contracts\RunKeeper8.Contracts.csproj", "{53E1BC4B-01AA-4E59-8384-F4160D8D168D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RunKeeper8.Domain", "RunKeeper8.Domain\RunKeeper8.Domain.csproj", "{664EA8BB-905C-4380-AF77-384B05A8343A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RunKeeper8.Domain", "Apps\RunKeeper8\RunKeeper8.Domain\RunKeeper8.Domain.csproj", "{664EA8BB-905C-4380-AF77-384B05A8343A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RunKeeper8.DI", "Apps\RunKeeper8\RunKeeper8.DI\RunKeeper8.DI.csproj", "{03F650BD-A5CF-449D-8B6F-9CED0EBC9D83}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -209,6 +211,22 @@ Global
 		{664EA8BB-905C-4380-AF77-384B05A8343A}.Release|Mixed Platforms.Build.0 = Release|x86
 		{664EA8BB-905C-4380-AF77-384B05A8343A}.Release|x86.ActiveCfg = Release|x86
 		{664EA8BB-905C-4380-AF77-384B05A8343A}.Release|x86.Build.0 = Release|x86
+		{03F650BD-A5CF-449D-8B6F-9CED0EBC9D83}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{03F650BD-A5CF-449D-8B6F-9CED0EBC9D83}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{03F650BD-A5CF-449D-8B6F-9CED0EBC9D83}.Debug|ARM.ActiveCfg = Debug|ARM
+		{03F650BD-A5CF-449D-8B6F-9CED0EBC9D83}.Debug|ARM.Build.0 = Debug|ARM
+		{03F650BD-A5CF-449D-8B6F-9CED0EBC9D83}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{03F650BD-A5CF-449D-8B6F-9CED0EBC9D83}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{03F650BD-A5CF-449D-8B6F-9CED0EBC9D83}.Debug|x86.ActiveCfg = Debug|x86
+		{03F650BD-A5CF-449D-8B6F-9CED0EBC9D83}.Debug|x86.Build.0 = Debug|x86
+		{03F650BD-A5CF-449D-8B6F-9CED0EBC9D83}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{03F650BD-A5CF-449D-8B6F-9CED0EBC9D83}.Release|Any CPU.Build.0 = Release|Any CPU
+		{03F650BD-A5CF-449D-8B6F-9CED0EBC9D83}.Release|ARM.ActiveCfg = Release|ARM
+		{03F650BD-A5CF-449D-8B6F-9CED0EBC9D83}.Release|ARM.Build.0 = Release|ARM
+		{03F650BD-A5CF-449D-8B6F-9CED0EBC9D83}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{03F650BD-A5CF-449D-8B6F-9CED0EBC9D83}.Release|Mixed Platforms.Build.0 = Release|x86
+		{03F650BD-A5CF-449D-8B6F-9CED0EBC9D83}.Release|x86.ActiveCfg = Release|x86
+		{03F650BD-A5CF-449D-8B6F-9CED0EBC9D83}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -218,5 +236,6 @@ Global
 		{AA50FC1A-15E6-47FE-8F8A-B3DAD3DB2A47} = {EE356AD6-FA84-4CEB-9772-354BBBFACEDE}
 		{53E1BC4B-01AA-4E59-8384-F4160D8D168D} = {EE356AD6-FA84-4CEB-9772-354BBBFACEDE}
 		{664EA8BB-905C-4380-AF77-384B05A8343A} = {EE356AD6-FA84-4CEB-9772-354BBBFACEDE}
+		{03F650BD-A5CF-449D-8B6F-9CED0EBC9D83} = {EE356AD6-FA84-4CEB-9772-354BBBFACEDE}
 	EndGlobalSection
 EndGlobal

@@ -16,6 +16,7 @@ namespace WindowsPhone.DI
 {
     public class Container : IDIContainer
     {
+        public object UnderlyingProvider { get { return Current.UnderlyingProvider; } }
         public static string DIContainer { get; set; }
         private static IDIContainer container;
 

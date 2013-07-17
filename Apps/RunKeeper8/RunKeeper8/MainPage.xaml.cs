@@ -7,6 +7,7 @@ using System.Windows.Controls;
 using System.Windows.Navigation;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
+using RunKeeper8.Contracts.ViewModels;
 using RunKeeper8.Resources;
 
 namespace RunKeeper8
@@ -17,6 +18,8 @@ namespace RunKeeper8
         public MainPage()
         {
             InitializeComponent();
+
+            var trackingViewModel = RunKeeper8.DI.Container.Current.Get<ITrackingViewModel>();
 
             // Sample code to localize the ApplicationBar
             //BuildLocalizedApplicationBar();

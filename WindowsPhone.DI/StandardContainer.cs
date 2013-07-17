@@ -1,21 +1,18 @@
 ﻿
 using Ninject;
-using Ninject.Parameters;
-using Ninject.Planning.Bindings;
-using Ninject.Extensions.Conventions;
 using WindowsPhone.Contracts.Core;
 
 namespace WindowsPhone.DI
 {
     public class StandardContainer : IDIContainer
     {
+        public object UnderlyingProvider { get { return _kernel; } }
         private IKernel _kernel;
 
         public StandardContainer()
         {
             _kernel = new StandardKernel(
                 new Modules.LoggingModule()
-                , new Modules.DomainModelsModule()
                 , new Modules.CommonModule()
                 , new Modules.StorageModule()
                 );

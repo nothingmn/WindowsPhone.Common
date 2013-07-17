@@ -11,5 +11,7 @@ namespace WindowsPhone.DI
     {
         T Get<T>(params IInjectionParameter[] parameters);
         T Get<T>(string name, params IInjectionParameter[] parameters);
+
+        object UnderlyingProvider { get; }
     }
 }

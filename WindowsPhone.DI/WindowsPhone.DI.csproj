@@ -88,21 +88,9 @@
     <Compile Include="MockContainer.cs" />
     <Compile Include="Modules\CommonModule.cs" />
     <Compile Include="Modules\StorageModule.cs" />
-    <Compile Include="Modules\DomainModelsModule.cs" />
     <Compile Include="Modules\LoggingModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StandardContainer.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Include="Ninject">
-      <HintPath>..\packages\Ninject.3.0.1.10\lib\sl4-windowsphone71\Ninject.dll</HintPath>
-    </Reference>
-    <Reference Include="Ninject.Extensions.Conventions">
-      <HintPath>..\packages\Ninject.Extensions.Conventions.3.0.0.11\lib\sl4-windowsphone71\Ninject.Extensions.Conventions.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\WindowsPhone.Common\WindowsPhone.Common.csproj">
@@ -125,6 +113,15 @@
       <Project>{2BC601F4-64F4-45B5-8905-13FE0BF69133}</Project>
       <Name>WindowsPhone.Storage</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Ninject, Version=3.0.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Ninject.3.0.1.10\lib\sl4-windowsphone71\Ninject.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion)\Microsoft.$(TargetFrameworkIdentifier).$(TargetFrameworkVersion).Overrides.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion)\Microsoft.$(TargetFrameworkIdentifier).CSharp.targets" />

@@ -10,6 +10,7 @@ namespace WindowsPhone.DI
 {
     public class MockContainer : IDIContainer
     {
+        public object UnderlyingProvider { get { return _kernel; } }
         IKernel _kernel;
         public MockContainer()
         {
