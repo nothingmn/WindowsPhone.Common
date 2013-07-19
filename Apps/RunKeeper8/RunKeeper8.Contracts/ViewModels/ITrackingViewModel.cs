@@ -44,5 +44,7 @@ namespace RunKeeper8.Contracts.ViewModels
         ICommand ConnectCommand { get; }
         ICommand ResumeCommand { get; }
 
+        ICommand RunKeeperLoginCommand { get; }
+
     }
 }

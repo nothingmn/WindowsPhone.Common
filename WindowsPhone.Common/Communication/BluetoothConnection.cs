@@ -35,12 +35,23 @@ namespace WindowsPhone.Common.Communication
         private async void ReadData()
         {
             while (true)
-            {                
-                var buffer = new byte[_dataReader.UnconsumedBufferLength];
-                _dataReader.ReadBytes(buffer);
-                object data = _channel.ConvertTo(buffer);
-                if (OnReceived != null) OnReceived(data, _socket, null, DateTime.Now);
-
+            {
+                List<Byte> bigBuffer = new List<byte>();
+                while (_dataReader.UnconsumedBufferLength > 0)
+                {
+                    var buffer = new byte[_dataReader.UnconsumedBufferLength];
+                    _dataReader.ReadBytes(buffer);
+                    bigBuffer.AddRange(buffer);
+                }
+                if (bigBuffer.Count > 0)
+                {
+                    object data = _channel.ConvertTo(bigBuffer.ToArray());
+                    if (OnReceived != null) OnReceived(data, _socket, null, DateTime.Now);
+                }
+                else
+                {
+                    System.Threading.Thread.Sleep(100);
+                }
             }
         }
         public bool IsOpen { get { return _connected; } }

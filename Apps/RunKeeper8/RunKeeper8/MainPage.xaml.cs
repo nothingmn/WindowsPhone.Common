@@ -14,6 +14,7 @@ using RunKeeper8.Contracts.ViewModels;
 using RunKeeper8.Resources;
 using WindowsPhone.Common.ViewModels;
 using WindowsPhone.Contracts;
+using WindowsPhone.Contracts.Communication;
 
 namespace RunKeeper8
 {
@@ -24,6 +25,11 @@ namespace RunKeeper8
         public MainPage()
         {
             InitializeComponent();
+
+            //var channel = DI.Container.Current.Get<IChannel>();
+            var channel1 = DI.Container.Current.Get<IChannel>("byte");
+            var channel2 = DI.Container.Current.Get<IChannel>("string");
+            var channel3 = DI.Container.Current.Get<IChannel>("csv");
 
             dataContext = DI.Container.Current.Get<ITrackingViewModel>();
             this.DataContext = dataContext;
@@ -60,6 +66,11 @@ namespace RunKeeper8
         private void PairMenuItem_Click(object sender, EventArgs e)
         {
             dataContext.PairCommand.Execute(null);
+        }
+
+        private void RunKeeperLoginMenuItem_Click(object sender, EventArgs e)
+        {
+            NavigationService.Navigate(new Uri("/UI/OAuthWebViewPage.xaml", UriKind.RelativeOrAbsolute));
         }
     }
 }

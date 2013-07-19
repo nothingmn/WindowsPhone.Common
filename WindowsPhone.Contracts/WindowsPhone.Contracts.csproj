@@ -83,8 +83,13 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Communication\Http\HttpDelegates.cs" />
+    <Compile Include="Communication\Http\HttpMethods.cs" />
+    <Compile Include="Communication\Http\IHttpClient.cs" />
+    <Compile Include="Communication\Http\IHttpPayload.cs" />
     <Compile Include="Communication\IChannel.cs" />
     <Compile Include="Communication\IConnection.cs" />
+    <Compile Include="Communication\ICredential.cs" />
     <Compile Include="Core\IInjectionParameter.cs" />
     <Compile Include="Core\IVersion.cs" />
     <Compile Include="IApplication.cs" />

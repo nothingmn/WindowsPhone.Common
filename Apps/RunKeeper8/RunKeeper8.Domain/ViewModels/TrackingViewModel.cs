@@ -137,6 +137,22 @@ namespace RunKeeper8.Domain.ViewModels
             TimeDisplay = Time.ToString(@"hh\:mm\:ss");
         }
 
+        private ICommand runKeeperLoginCommand;
+        public ICommand RunKeeperLoginCommand
+        {
+            get
+            {
+                if (runKeeperLoginCommand == null)
+                {
+                    runKeeperLoginCommand = new DelegateCommand(LoginUser);
+                }
+                return runKeeperLoginCommand;
+            }
+        }
+        private void LoginUser()
+        {
+            
+        }
 
         private ICommand searchCommand;
 

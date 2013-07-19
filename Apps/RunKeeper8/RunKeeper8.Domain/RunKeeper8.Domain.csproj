@@ -91,6 +91,8 @@
     <Compile Include="Geo\Position.cs" />
     <Compile Include="Geo\PositionHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RunKeeper\v1\Account.cs" />
+    <Compile Include="ViewModels\ServiceAccountAuthWebViewModel.cs" />
     <Compile Include="ViewModels\TrackingViewModel.cs" />
   </ItemGroup>
   <ItemGroup>

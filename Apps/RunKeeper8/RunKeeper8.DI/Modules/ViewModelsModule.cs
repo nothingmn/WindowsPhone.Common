@@ -12,6 +12,7 @@ namespace RunKeeper8.DI.Modules
 
                 //Application specific domain model binding
                 Bind<ITrackingViewModel>().To<TrackingViewModel>();
+                Bind<IOAuthViewModel>().To<ServiceAccountAuthWebViewModel>();
 
             }
         }

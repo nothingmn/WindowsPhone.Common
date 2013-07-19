@@ -15,6 +15,7 @@ namespace WindowsPhone.DI
                 new Modules.LoggingModule()
                 , new Modules.CommonModule()
                 , new Modules.StorageModule()
+                , new Modules.CommunicationModule()
                 );
             //_kernel.Bind().ToSelf();
 

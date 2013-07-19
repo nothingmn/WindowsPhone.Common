@@ -88,6 +88,11 @@
     <Compile Include="Command\DelegateCommand.cs" />
     <Compile Include="Communication\BluetoothConnection.cs" />
     <Compile Include="Communication\Channels\ByteArrayChannel.cs" />
+    <Compile Include="Communication\Channels\CSVChannel.cs" />
+    <Compile Include="Communication\Channels\StringChannel.cs" />
+    <Compile Include="Communication\Credential.cs" />
+    <Compile Include="Communication\Http\HttpClient.cs" />
+    <Compile Include="Communication\Http\HttpPayload.cs" />
     <Compile Include="Localization\SimpleLocalizer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="AppVersion.cs" />
