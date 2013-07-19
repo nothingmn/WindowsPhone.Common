@@ -83,8 +83,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Communication\IChannel.cs" />
+    <Compile Include="Communication\IConnection.cs" />
     <Compile Include="Core\IInjectionParameter.cs" />
     <Compile Include="Core\IVersion.cs" />
+    <Compile Include="IApplication.cs" />
+    <Compile Include="Localization\ILocalize.cs" />
     <Compile Include="Logging\ILog.cs" />
     <Compile Include="Logging\ILogFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

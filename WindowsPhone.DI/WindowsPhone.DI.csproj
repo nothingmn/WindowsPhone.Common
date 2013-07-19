@@ -87,6 +87,7 @@
     <Compile Include="IDIContainer.cs" />
     <Compile Include="MockContainer.cs" />
     <Compile Include="Modules\CommonModule.cs" />
+    <Compile Include="Modules\CommunicationModule.cs" />
     <Compile Include="Modules\StorageModule.cs" />
     <Compile Include="Modules\LoggingModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

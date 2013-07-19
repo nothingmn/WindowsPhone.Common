@@ -84,6 +84,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Container.cs" />
+    <Compile Include="Modules\DomainModelsModule.cs" />
     <Compile Include="Modules\ViewModelsModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

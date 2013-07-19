@@ -1,42 +1,65 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Device.Location;
 using System.Linq;
 using System.Net;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 using System.Windows.Navigation;
 using Microsoft.Phone.Controls;
+using Microsoft.Phone.Maps.Controls;
 using Microsoft.Phone.Shell;
 using RunKeeper8.Contracts.ViewModels;
 using RunKeeper8.Resources;
+using WindowsPhone.Common.ViewModels;
+using WindowsPhone.Contracts;
 
 namespace RunKeeper8
 {
     public partial class MainPage : PhoneApplicationPage
     {
+        private ITrackingViewModel dataContext;
         // Constructor
         public MainPage()
         {
             InitializeComponent();
 
-            // Sample code to localize the ApplicationBar
-            //BuildLocalizedApplicationBar();
+            dataContext = DI.Container.Current.Get<ITrackingViewModel>();
+            this.DataContext = dataContext;
+
+            //this stuff is a hack because it seems like the map has issues with databinding xaml to viewmodels for pololines
+            //                <maps:Map.MapElements >
+            //        <maps:MapPolyline StrokeColor="{Binding StrokeColor, Mode=TwoWay}" StrokeThickness="{Binding StrokeThickness, Mode=TwoWay}" Path="{Binding Coordinates, Mode=TwoWay}">
+            //        </maps:MapPolyline>
+            //    </maps:Map.MapElements>
+
+            dataContext.Coordinates.CollectionChanged += Coordinates_CollectionChanged;
+
+            (dataContext as ViewModelBase).PropertyChanged += MainPage_PropertyChanged;
+            line.StrokeColor = dataContext.StrokeColor;
+            line.StrokeThickness = dataContext.StrokeThickness;
+            Map.MapElements.Add(line);
+            
         }
 
-        // Sample code for building a localized ApplicationBar
-        //private void BuildLocalizedApplicationBar()
-        //{
-        //    // Set the page's ApplicationBar to a new instance of ApplicationBar.
-        //    ApplicationBar = new ApplicationBar();
+        void MainPage_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == "StrokeThickness") line.StrokeThickness = dataContext.StrokeThickness;
+            if (e.PropertyName == "StrokeColor") line.StrokeColor = dataContext.StrokeColor;
+        }
+        MapPolyline line = new MapPolyline();
+        void Coordinates_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            foreach (var trigger in e.NewItems)
+            {
+                line.Path.Add(trigger as GeoCoordinate);
+            }
+        }
 
-        //    // Create a new button and set the text value to the localized string from AppResources.
-        //    ApplicationBarIconButton appBarButton = new ApplicationBarIconButton(new Uri("/Assets/AppBar/appbar.add.rest.png", UriKind.Relative));
-        //    appBarButton.Text = AppResources.AppBarButtonText;
-        //    ApplicationBar.Buttons.Add(appBarButton);
-
-        //    // Create a new menu item with the localized string from AppResources.
-        //    ApplicationBarMenuItem appBarMenuItem = new ApplicationBarMenuItem(AppResources.AppBarMenuItemText);
-        //    ApplicationBar.MenuItems.Add(appBarMenuItem);
-        //}
+        private void PairMenuItem_Click(object sender, EventArgs e)
+        {
+            dataContext.PairCommand.Execute(null);
+        }
     }
 }

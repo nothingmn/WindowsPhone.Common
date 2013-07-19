@@ -83,6 +83,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Application.cs" />
+    <Compile Include="Command\CommandReference.cs" />
+    <Compile Include="Command\DelegateCommand.cs" />
+    <Compile Include="Communication\BluetoothConnection.cs" />
+    <Compile Include="Communication\Channels\ByteArrayChannel.cs" />
+    <Compile Include="Localization\SimpleLocalizer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="AppVersion.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />

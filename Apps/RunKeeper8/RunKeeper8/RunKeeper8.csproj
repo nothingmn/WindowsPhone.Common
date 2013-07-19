@@ -15,8 +15,7 @@
     <TargetFrameworkVersion>v8.0</TargetFrameworkVersion>
     <SilverlightVersion>$(TargetFrameworkVersion)</SilverlightVersion>
     <SilverlightApplication>true</SilverlightApplication>
-    <SupportedCultures>
-    </SupportedCultures>
+    <SupportedCultures>es-MX</SupportedCultures>
     <XapOutputs>true</XapOutputs>
     <GenerateSilverlightManifest>true</GenerateSilverlightManifest>
     <XapFilename>RunKeeper8_$(Configuration)_$(Platform).xap</XapFilename>
@@ -93,6 +92,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Utils\GridUtils.cs" />
     <Compile Include="LocalizedStrings.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
@@ -142,12 +142,18 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Resources\AppResources.es-MX.resx" />
+    <EmbeddedResource Include="Resources\AppResources.es-US.resx" />
     <EmbeddedResource Include="Resources\AppResources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>AppResources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\WindowsPhone.Common\WindowsPhone.Common.csproj">
+      <Project>{4F50F6DE-20C5-4694-8A95-1E9BB1AA06C1}</Project>
+      <Name>WindowsPhone.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\WindowsPhone.Contracts\WindowsPhone.Contracts.csproj">
       <Project>{062A43B3-4877-4BBF-87FE-F2E0D9D63122}</Project>
       <Name>WindowsPhone.Contracts</Name>

@@ -122,37 +122,37 @@
     <comment>Controls the FlowDirection for all elements in the RootFrame. Set to the traditional direction of this resource file's language</comment>
   </data>
   <data name="ResourceLanguage" xml:space="preserve">
-    <value>en-US</value>
+    <value>es-US</value>
     <comment>Controls the Language and ensures that the font for all elements in the RootFrame aligns with the app's language. Set to the language code of this resource file's language.</comment>
   </data>
   <data name="ApplicationTitle" xml:space="preserve">
     <value>RUNKEEPER 8</value>
   </data>
   <data name="AppBarButtonText" xml:space="preserve">
-    <value>add</value>
+    <value>Añadir</value>
   </data>
   <data name="AppBarMenuItemText" xml:space="preserve">
     <value>Menu Item</value>
   </data>
   <data name="Calories" xml:space="preserve">
-    <value>Calories</value>
+    <value>Calorías</value>
   </data>
   <data name="Connect" xml:space="preserve">
-    <value>Connect</value>
+    <value>Conectar</value>
   </data>
   <data name="Distance" xml:space="preserve">
-    <value>Distance</value>
+    <value>Distancia</value>
   </data>
   <data name="Pace" xml:space="preserve">
-    <value>Pace</value>
+    <value>Paso</value>
   </data>
   <data name="Resume" xml:space="preserve">
-    <value>Resume</value>
+    <value>Reanudar</value>
   </data>
   <data name="Start" xml:space="preserve">
-    <value>Start</value>
+    <value>Iniciar</value>
   </data>
   <data name="Time" xml:space="preserve">
-    <value>Time</value>
+    <value>Tiempo</value>
   </data>
 </root>

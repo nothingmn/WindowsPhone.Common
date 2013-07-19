@@ -39,7 +39,10 @@ namespace RunKeeper8.DI
                      var kernel = (CommonContainer.UnderlyingProvider as IKernel);
                      if (kernel != null)
                      {
-                         kernel.Load(new ViewModelsModule());
+                         kernel.Load(
+                               new ViewModelsModule()
+                             , new DomainModelsModule()
+                             );
                      }
                  }
                  return CommonContainer;

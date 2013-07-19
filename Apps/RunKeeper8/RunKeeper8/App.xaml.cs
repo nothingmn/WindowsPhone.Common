@@ -7,11 +7,13 @@ using System.Windows.Navigation;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using RunKeeper8.Resources;
+using WindowsPhone.Contracts;
 
 namespace RunKeeper8
 {
     public partial class App : Application
     {
+
         /// <summary>
         /// Provides easy access to the root frame of the Phone Application.
         /// </summary>
@@ -34,6 +36,11 @@ namespace RunKeeper8
 
             // Language display initialization
             InitializeLanguage();
+
+
+            IApplication application = DI.Container.Current.Get<IApplication>();
+            application.Name = "RunKeeper 8";
+
 
             // Show graphics profiling information while debugging.
             if (Debugger.IsAttached)
