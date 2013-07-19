@@ -13,8 +13,12 @@ namespace RunKeeper8.DI.Modules
             {
 
                 //Application specific domain model binding
+#if DEBUG
                 Bind<IGeoPositionWatcher<GeoCoordinate>>().To<GeoCoordinateSimulator>();
+#else
+                Bind<IGeoPositionWatcher<GeoCoordinate>>().To<GeoCoordinateWatcher>();
 
+#endif
             }
         }
     }
