@@ -3,6 +3,7 @@ using Ninject.Modules;
 using RunKeeper8.Contracts.Services;
 using RunKeeper8.Contracts.ViewModels;
 using RunKeeper8.Domain.Geo;
+using RunKeeper8.Domain.RunKeeper;
 using RunKeeper8.Domain.RunKeeper.v1;
 using RunKeeper8.Domain.ViewModels;
 
@@ -23,6 +24,11 @@ namespace RunKeeper8.DI.Modules
 #endif
 
                 Bind<IAccount>().To<Account>();
+
+                Bind<IPublishActivity>().To<RunKeeperActivityPublisher>();
+
+                Bind<IActivity>().To<Activity>();
+                Bind<IPath>().To<Path>();
 
             }
         }

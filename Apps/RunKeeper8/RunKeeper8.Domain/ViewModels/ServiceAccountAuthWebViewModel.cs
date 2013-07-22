@@ -5,7 +5,11 @@ using System.Text;
 using System.Threading.Tasks;
 using RunKeeper8.Contracts.Services;
 using RunKeeper8.Contracts.ViewModels;
+using RunKeeper8.Domain.RunKeeper.v1;
 using WindowsPhone.Common.ViewModels;
+using WindowsPhone.Contracts.Communication.Http;
+using WindowsPhone.Contracts.Storage;
+using WindowsPhone.Storage;
 
 namespace RunKeeper8.Domain.ViewModels
 {
@@ -15,6 +19,7 @@ namespace RunKeeper8.Domain.ViewModels
         public ServiceAccountAuthWebViewModel(IAccount account)
         {
             ServiceAccount = account;
+
         }
 
         private IAccount _serviceAccount;
@@ -22,5 +27,32 @@ namespace RunKeeper8.Domain.ViewModels
 
         private string _Url;
         public string Url { get { return _Url; } set { _Url = value; base.OnPropertyChanged("Url"); } }
+
+        public void UpdateAccessCode(string code)
+        {
+            _serviceAccount.Code = code;
+            var http = WindowsPhone.DI.Container.Current.Get<IHttpClient>();
+            var url = _serviceAccount.TokenEndPoint();
+            var ps = System.Text.Encoding.UTF8.GetBytes(_serviceAccount.TokenParameters());
+            http.OnHttpDownloaded += http_OnHttpDownloaded;
+            http.POST(url, ps, null, null, null, null, null, "application/x-www-form-urlencoded", true, "application/x-www-form-urlencoded", false, null, null);
+        }
+
+        void http_OnHttpDownloaded(object Sender, byte[] Data, long Duration, string Key, System.Net.WebHeaderCollection Headers = null)
+        {
+
+            //var d = System.Text.Encoding.UTF8.GetString(Data, 0, Data.Length);
+            var serializer =
+                WindowsPhone.DI.Container.Current.Get<WindowsPhone.Contracts.Serialization.ISerialize>("JSON");
+            var res = serializer.Deserialize<TokenRequestResponse>(Data);
+
+            this.UpdateAccessToken(res.access_token);
+        }
+        public void UpdateAccessToken(string token)
+        {
+            _serviceAccount.AccessToken = token;
+
+            OnPropertyChanged("ServiceAccount");
+        }
     }
 }

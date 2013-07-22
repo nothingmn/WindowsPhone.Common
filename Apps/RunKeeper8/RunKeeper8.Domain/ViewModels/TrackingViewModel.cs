@@ -6,12 +6,14 @@ using System.Linq;
 using System.Resources;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
 using Microsoft.Phone.Maps.Controls;
 using Microsoft.Phone.Shell;
 using RunKeeper8.Contracts.Geo;
+using RunKeeper8.Contracts.Services;
 using RunKeeper8.Contracts.ViewModels;
 using RunKeeper8.Domain.Geo;
 using WindowsPhone.Common.Command;
@@ -34,22 +36,23 @@ namespace RunKeeper8.Domain.ViewModels
 
         private DispatcherTimer _timer = new DispatcherTimer();
         private long _startTime;
-
+        private DateTime _startedAt;
 
         private bool _started = false;
         //ID_CAP_LOCATION
         private double _kilometres;
         private long _previousPositionChangeTick;
 
+        public IAccount Account { get; set; }
 
-        public TrackingViewModel(ILog log, ILocalize localize, IApplication application,
+        public TrackingViewModel(ILog log, IAccount account, ILocalize localize, IApplication application,
                                  IGeoPositionWatcher<GeoCoordinate> coordinateProvider)
         {
             _log = log;
             _localize = localize;
             _application = application;
             _coordinateProvider = coordinateProvider;
-
+            Account = account;
 
             _started = false;
             _startTime = System.Environment.TickCount;
@@ -194,12 +197,56 @@ namespace RunKeeper8.Domain.ViewModels
                 _timer.Stop();
                 _coordinateProvider.Stop();
                 _started = false;
+
+
+                
+                if (!string.IsNullOrEmpty(Account.AccessToken))
+                {
+                    var result = MessageBox.Show("Do you want to publish this to RunKeeper?", "Publish?", MessageBoxButton.OKCancel);
+                    if (result == MessageBoxResult.OK)
+                    {
+                        var activity = WindowsPhone.DI.Container.Current.Get<IActivity>();
+                        activity.equipment = "None";
+                        activity.type = "Walking";
+                        if (Pace.TotalMinutes > 120) activity.type = "Running";
+                        activity.start_time = _startedAt.ToLongTimeString();
+                        
+                        
+                        //move to settings
+                        activity.post_to_facebook = false;
+                        activity.post_to_twitter = false;
+
+                        activity.path = new List<IPath>();
+
+                        var counter = 0;
+                        foreach (var c in Coordinates)
+                        {
+                            var path = WindowsPhone.DI.Container.Current.Get<IPath>();
+                            path.altitude = c.Altitude;
+                            path.latitude = c.Latitude;
+                            path.longitude = c.Longitude;
+                            if (counter == 0) path.type = "Start";
+                            if (counter == Coordinates.Count-1) path.type = "End";
+                            activity.path.Add(path);
+                            counter++;
+                        }
+                        
+
+
+                        var publisher = WindowsPhone.DI.Container.Current.Get<IPublishActivity>();
+                        publisher.Publish(activity);
+                    }
+                }
+
             }
             else
             {
                 _timer.Start();
                 _coordinateProvider.Start();
                 _started = true;
+                _startedAt = DateTime.Now;
+
+                
             }
         }
 

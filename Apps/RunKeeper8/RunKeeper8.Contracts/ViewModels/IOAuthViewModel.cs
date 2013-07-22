@@ -10,8 +10,10 @@ namespace RunKeeper8.Contracts.ViewModels
     public interface IOAuthViewModel
     {
         IAccount ServiceAccount { get; set; }
-
         string Url { get; set; }
-        
+
+        void UpdateAccessToken(string token);
+        void UpdateAccessCode(string code);
+
     }
 }

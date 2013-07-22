@@ -76,11 +76,11 @@ namespace WindowsPhone.Common.Communication.Http
         string Accept = null;
         bool AllowAutoRedirect = false;
         string UserAgent = null;
-        private void Download(string Url, HttpMethods Method = HttpMethods.GET, byte[] PostData = null, string Key = null, System.Net.CookieContainer CookieContainer = null, string Username = null, string Password = null, string Domain = null, string Accept = null, Boolean AllowAutoRedirect = false, string ContentType = null, bool UseDefaultCredentials = false, string UserAgent = null, WebHeaderCollection Headers = null)
+        private void Download(string Url, HttpMethods method = HttpMethods.GET, byte[] PostData = null, string Key = null, System.Net.CookieContainer CookieContainer = null, string Username = null, string Password = null, string Domain = null, string Accept = null, Boolean AllowAutoRedirect = false, string ContentType = null, bool UseDefaultCredentials = false, string UserAgent = null, WebHeaderCollection Headers = null)
         {
             try
             {
-                _log.Info(string.Format("Url:{0}, Method:{1}, Key:{2}, Username:{3}, Password:{4}, Domain:{5}, Accept:{6}, AllowAutoRedirect:{7}, ContentType:{8}, UseDefaultCredentials:{9}, UserAgent:{10}", Url, Method, Key, Username, Password, Domain, Accept, AllowAutoRedirect, ContentType, UseDefaultCredentials, UserAgent));
+                _log.Info(string.Format("Url:{0}, Method:{1}, Key:{2}, Username:{3}, Password:{4}, Domain:{5}, Accept:{6}, AllowAutoRedirect:{7}, ContentType:{8}, UseDefaultCredentials:{9}, UserAgent:{10}", Url, method, Key, Username, Password, Domain, Accept, AllowAutoRedirect, ContentType, UseDefaultCredentials, UserAgent));
                 StopWatch = new Stopwatch();
                 StopWatch.Start();
                 this.Key = Key;
@@ -122,14 +122,19 @@ namespace WindowsPhone.Common.Communication.Http
                 {
                     request.UseDefaultCredentials = UseDefaultCredentials;
                 }
-                request.Method = Method.ToString();
+                request.Method = method.ToString();
 
-                if (Method == HttpMethods.POST || Method == HttpMethods.OPTIONS)
+                if (method == HttpMethods.POST || method == HttpMethods.OPTIONS)
                 {
                     _PostData = PostData;
                     //for post, we typically are posting data, lets get the request stream
-                    request.ContentType = "application/x-www-form-urlencoded";
-                    //request.BeginGetRequestStream(BeginRequest, request);
+
+                    request.ContentType = ContentType;
+
+                    if(string.IsNullOrEmpty(ContentType)) 
+                        request.ContentType = "application/x-www-form-urlencoded";
+                    
+                    
                     request.BeginGetRequestStream(new AsyncCallback(BeginRequest), request);
                     HasElapsed();                    
                 }
@@ -154,7 +159,7 @@ namespace WindowsPhone.Common.Communication.Http
             try
             {
                 var req = ((HttpWebRequest)request.AsyncState);
-                
+
                 req.AllowAutoRedirect = AllowAutoRedirect;
                 if (Accept != null) req.Accept = Accept;
                 if (ContentType != null) req.ContentType = ContentType;

@@ -27,10 +27,16 @@ namespace RunKeeper8.UI
 
             ((ViewModelBase)dataContext).PropertyChanged += OAuthWebView_PropertyChanged;
 
+            if (!string.IsNullOrEmpty(dataContext.ServiceAccount.AccessToken)) GoHome();
 
             dataContext.Url = dataContext.ServiceAccount.AuthorizationEndPoint();
         }
 
+        private void GoHome()
+        {
+            if(NavigationService!=null && NavigationService.CanGoBack) NavigationService.GoBack();
+            
+        }
         void OAuthWebView_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
 
@@ -53,8 +59,8 @@ namespace RunKeeper8.UI
                 var q = e.Uri.Query;
                 if (q.StartsWith("?")) q = q.Substring(1);
                 q = q.Replace("code=", "");
-                dataContext.ServiceAccount.Code = q;
-                NavigationService.GoBack();
+                dataContext.UpdateAccessCode(q);
+                GoHome();
             }
         }
         //https://runkeeper.com/apps/authorize?scope=&response_type=code&redirect_uri=https://authcomplete/&state=&client_id=67778de52c0442e296e3ed149fec3af3
@@ -62,4 +68,7 @@ namespace RunKeeper8.UI
 
 
     }
+
+
+
 }

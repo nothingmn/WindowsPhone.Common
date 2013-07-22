@@ -19,6 +19,7 @@ namespace WindowsPhone.Contracts.Storage
         Uri RemoteUri { get; set; }
         Uri LocalUri { get; set; }
 
+
         Task<bool> Save();
         Task<bool> Load();
     }

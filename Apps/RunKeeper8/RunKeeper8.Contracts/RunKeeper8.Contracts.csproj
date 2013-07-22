@@ -93,6 +93,9 @@
     <Compile Include="Geo\IRhumbDistanceCalculator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\IAccount.cs" />
+    <Compile Include="Services\IActivity.cs" />
+    <Compile Include="Services\IPath.cs" />
+    <Compile Include="Services\IPublishActivity.cs" />
     <Compile Include="ViewModels\IOAuthViewModel.cs" />
     <Compile Include="ViewModels\ITrackingViewModel.cs" />
   </ItemGroup>

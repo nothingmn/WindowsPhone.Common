@@ -91,22 +91,34 @@
     <Compile Include="Geo\Position.cs" />
     <Compile Include="Geo\PositionHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RunKeeper\RunKeeperActivityPublisher.cs" />
     <Compile Include="RunKeeper\v1\Account.cs" />
+    <Compile Include="RunKeeper\v1\Activity.cs" />
+    <Compile Include="RunKeeper\v1\Path.cs" />
+    <Compile Include="RunKeeper\v1\TokenRequestResponse.cs" />
     <Compile Include="ViewModels\ServiceAccountAuthWebViewModel.cs" />
     <Compile Include="ViewModels\TrackingViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\WindowsPhone.Common\WindowsPhone.Common.csproj">
+      <Project>{4F50F6DE-20C5-4694-8A95-1E9BB1AA06C1}</Project>
+      <Name>WindowsPhone.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\WindowsPhone.Contracts\WindowsPhone.Contracts.csproj">
       <Project>{062A43B3-4877-4BBF-87FE-F2E0D9D63122}</Project>
       <Name>WindowsPhone.Contracts</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\WindowsPhone.DI\WindowsPhone.DI.csproj">
+      <Project>{FDF7C488-3AD4-4D97-96E0-DE99CECB13FF}</Project>
+      <Name>WindowsPhone.DI</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\WindowsPhone.Storage\WindowsPhone.Storage.csproj">
+      <Project>{2BC601F4-64F4-45B5-8905-13FE0BF69133}</Project>
+      <Name>WindowsPhone.Storage</Name>
+    </ProjectReference>
     <ProjectReference Include="..\RunKeeper8.Contracts\RunKeeper8.Contracts.csproj">
       <Project>{53E1BC4B-01AA-4E59-8384-F4160D8D168D}</Project>
       <Name>RunKeeper8.Contracts</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\WindowsPhone.Common\WindowsPhone.Common.csproj">
-      <Project>{4F50F6DE-20C5-4694-8A95-1E9BB1AA06C1}</Project>
-      <Name>WindowsPhone.Common</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion)\Microsoft.$(TargetFrameworkIdentifier).$(TargetFrameworkVersion).Overrides.targets" />

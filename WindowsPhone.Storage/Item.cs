@@ -65,10 +65,26 @@ namespace WindowsPhone.Storage
             IStorageFolder StorageFolder = ResolveStorageFolderForLoad();
             _log.InfoFormat("Read Item:Name:{0}, Path:{1}", this.Name, StorageFolder.Path);
 
-            _helper.ReadFile(this.Name, StorageFolder).ContinueWith(task =>
+            IStorageFile file = null;
+            try
+            {
+                StorageFolder.GetFileAsync(this.Name).AsTask().ContinueWith(t =>
                 {
-                    this.Contents = task.Result;
+                    file = t.Result;
                 }).Wait();
+            }
+            catch (Exception)
+            {
+                
+            }
+            if (file != null)
+            {
+
+                _helper.ReadFile(this.Name, StorageFolder).ContinueWith(task =>
+                    {
+                        this.Contents = task.Result;
+                    }).Wait();
+            }
             return true;
         }
     }

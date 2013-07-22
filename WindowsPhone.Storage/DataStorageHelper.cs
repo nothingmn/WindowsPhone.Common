@@ -37,10 +37,15 @@ namespace WindowsPhone.Storage
         public async Task<byte[]> ReadFile(string name, IStorageFolder folder)
         {            
             // Get the file.
-            var file = await folder.OpenStreamForReadAsync(name);
+            Stream file = null;
+            folder.OpenStreamForReadAsync(name).ContinueWith(t =>
+                {
+                    file = t.Result;
+                }).Wait();
             byte[] buffer = new byte[file.Length];
             //read it
             file.Read(buffer, 0, buffer.Length);
+            file.Dispose();
             return buffer;
         }
 

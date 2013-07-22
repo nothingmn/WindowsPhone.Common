@@ -13,5 +13,13 @@
 
         string AuthorizationEndPoint();
         string TokenEndPoint();
+        string TokenParameters();
+        string RecordActivityEndPoint();
+
+        string RecordActivityUrl { get; set; }
+
+        void Load();
+        void Save();
+
     }
 }
