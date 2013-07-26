@@ -16,5 +16,12 @@ namespace RunKeeper8.Contracts.Services
         IList<IPath> path { get; set; }
         bool post_to_facebook { get; set; }
         bool post_to_twitter { get; set; }
+
+        string secondary_type { get; set; }
+        double total_distance { get; set; }
+        double duration { get; set; }
+        double total_calories { get; set; }
+        bool detect_pauses { get; set; }
+
     }
 }

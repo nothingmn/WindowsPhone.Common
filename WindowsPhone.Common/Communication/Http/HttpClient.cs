@@ -148,12 +148,27 @@ namespace WindowsPhone.Common.Communication.Http
             }
             catch (Exception e)
             {
-                if (OnHttpDownloadError != null) OnHttpDownloadError(this, e, this.Key);
+
+                if (OnHttpDownloadError != null) OnHttpDownloadError(this, e, FishOutBody(e), this.Key);
             }
 
         }
 
-
+        private string FishOutBody(Exception e)
+        {
+            var body = "";
+            try
+            {
+                using (StreamReader rdr = new StreamReader(((System.Net.WebException)(e.InnerException)).Response.GetResponseStream()))
+                {
+                    body = rdr.ReadToEnd();
+                }
+            }
+            catch (Exception)
+            {
+            }
+            return body;
+        }
         private void BeginRequest(IAsyncResult request)
         {
             try
@@ -179,7 +194,7 @@ namespace WindowsPhone.Common.Communication.Http
             }
             catch (Exception e)
             {
-                if (OnHttpDownloadError != null) OnHttpDownloadError(this, e, this.Key);
+                if (OnHttpDownloadError != null) OnHttpDownloadError(this, e,FishOutBody(e), this.Key);
             }
 
         }
@@ -231,7 +246,7 @@ namespace WindowsPhone.Common.Communication.Http
             }
             catch (Exception e)
             {
-                if (OnHttpDownloadError != null) OnHttpDownloadError(this, e, this.Key);
+                if (OnHttpDownloadError != null) OnHttpDownloadError(this, e,FishOutBody(e), this.Key);
             }
 
         }

@@ -83,6 +83,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Excercise\IExcerciseType.cs" />
+    <Compile Include="Excercise\IExcerciseTypes.cs" />
+    <Compile Include="Excercise\IHistoryItem.cs" />
     <Compile Include="Geo\DistanceUnit.cs" />
     <Compile Include="Geo\IAngleConverter.cs" />
     <Compile Include="Geo\IBearingCalculator.cs" />
@@ -96,6 +99,8 @@
     <Compile Include="Services\IActivity.cs" />
     <Compile Include="Services\IPath.cs" />
     <Compile Include="Services\IPublishActivity.cs" />
+    <Compile Include="Excercise\IHistory.cs" />
+    <Compile Include="ViewModels\IHomeViewModel.cs" />
     <Compile Include="ViewModels\IOAuthViewModel.cs" />
     <Compile Include="ViewModels\ITrackingViewModel.cs" />
   </ItemGroup>

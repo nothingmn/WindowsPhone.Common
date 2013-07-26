@@ -106,6 +106,24 @@ namespace RunKeeper8.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cross-Country Skiing.
+        /// </summary>
+        public static string CrossCountrySkiing {
+            get {
+                return ResourceManager.GetString("CrossCountrySkiing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cycling.
+        /// </summary>
+        public static string Cycling {
+            get {
+                return ResourceManager.GetString("Cycling", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Distance.
         /// </summary>
         public static string Distance {
@@ -115,11 +133,92 @@ namespace RunKeeper8.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Downhill Skiing.
+        /// </summary>
+        public static string DownhillSkiing {
+            get {
+                return ResourceManager.GetString("DownhillSkiing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Elliptical.
+        /// </summary>
+        public static string Elliptical {
+            get {
+                return ResourceManager.GetString("Elliptical", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Excercise Type.
+        /// </summary>
+        public static string ExcerciseType {
+            get {
+                return ResourceManager.GetString("ExcerciseType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hiking.
+        /// </summary>
+        public static string Hiking {
+            get {
+                return ResourceManager.GetString("Hiking", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to get started.
+        /// </summary>
+        public static string HomePage1Title {
+            get {
+                return ResourceManager.GetString("HomePage1Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to get setup.
+        /// </summary>
+        public static string HomePage2Title {
+            get {
+                return ResourceManager.GetString("HomePage2Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mountain Biking.
+        /// </summary>
+        public static string MountainBiking {
+            get {
+                return ResourceManager.GetString("MountainBiking", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Other.
+        /// </summary>
+        public static string Other {
+            get {
+                return ResourceManager.GetString("Other", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Pace.
         /// </summary>
         public static string Pace {
             get {
                 return ResourceManager.GetString("Pace", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pause.
+        /// </summary>
+        public static string Pause {
+            get {
+                return ResourceManager.GetString("Pause", resourceCulture);
             }
         }
         
@@ -151,6 +250,42 @@ namespace RunKeeper8.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Rowing.
+        /// </summary>
+        public static string Rowing {
+            get {
+                return ResourceManager.GetString("Rowing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Running.
+        /// </summary>
+        public static string Running {
+            get {
+                return ResourceManager.GetString("Running", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Skating.
+        /// </summary>
+        public static string Skating {
+            get {
+                return ResourceManager.GetString("Skating", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Snowboarding.
+        /// </summary>
+        public static string Snowboarding {
+            get {
+                return ResourceManager.GetString("Snowboarding", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Start.
         /// </summary>
         public static string Start {
@@ -160,11 +295,47 @@ namespace RunKeeper8.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Stop.
+        /// </summary>
+        public static string Stop {
+            get {
+                return ResourceManager.GetString("Stop", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Swimming.
+        /// </summary>
+        public static string Swimming {
+            get {
+                return ResourceManager.GetString("Swimming", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Time.
         /// </summary>
         public static string Time {
             get {
                 return ResourceManager.GetString("Time", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Walking.
+        /// </summary>
+        public static string Walking {
+            get {
+                return ResourceManager.GetString("Walking", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Wheelchair.
+        /// </summary>
+        public static string Wheelchair {
+            get {
+                return ResourceManager.GetString("Wheelchair", resourceCulture);
             }
         }
     }

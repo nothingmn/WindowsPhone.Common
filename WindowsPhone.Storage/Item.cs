@@ -70,7 +70,7 @@ namespace WindowsPhone.Storage
             {
                 StorageFolder.GetFileAsync(this.Name).AsTask().ContinueWith(t =>
                 {
-                    file = t.Result;
+                    if(t!=null && t.Result!=null) file = t.Result;
                 }).Wait();
             }
             catch (Exception)

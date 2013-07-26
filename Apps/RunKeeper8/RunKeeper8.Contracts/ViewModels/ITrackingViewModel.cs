@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 using Microsoft.Phone.Maps.Controls;
@@ -26,6 +28,7 @@ namespace RunKeeper8.Contracts.ViewModels
 
         GeoCoordinate MapCenter { get; set; }
 
+        string ActivityType { get; set; }
         double ZoomLevel { get; set; }
         double Heading { get; set; }
         double Pitch { get; set; }
@@ -45,6 +48,19 @@ namespace RunKeeper8.Contracts.ViewModels
         ICommand ResumeCommand { get; }
 
         ICommand RunKeeperLoginCommand { get; }
+
+
+        DateTime PublishDateTime { get; set; }
+        bool PublishSuccess { get; set; }
+        string PublishBody { get; set; }
+
+
+        Visibility StopVisibility { get; set; }
+        Visibility StartVisibility { get; set; }
+        Visibility ResumeVisibility { get; set; }
+        Visibility PauseVisibility { get; set; }
+
+        event PropertyChangedEventHandler PropertyChanged;
 
     }
 }

@@ -8,6 +8,7 @@ using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using RunKeeper8.Resources;
 using WindowsPhone.Contracts;
+using WindowsPhone.Contracts.Navigation;
 
 namespace RunKeeper8
 {

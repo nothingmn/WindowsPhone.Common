@@ -1,5 +1,7 @@
 ﻿using Ninject.Modules;
+using RunKeeper8.Contracts.Excercise;
 using RunKeeper8.Contracts.ViewModels;
+using RunKeeper8.Domain.Excercise;
 using RunKeeper8.Domain.ViewModels;
 
 namespace RunKeeper8.DI.Modules
@@ -13,6 +15,7 @@ namespace RunKeeper8.DI.Modules
                 //Application specific domain model binding
                 Bind<ITrackingViewModel>().To<TrackingViewModel>();
                 Bind<IOAuthViewModel>().To<ServiceAccountAuthWebViewModel>();
+                Bind<IHomeViewModel>().To<HomeViewModel>();
 
             }
         }

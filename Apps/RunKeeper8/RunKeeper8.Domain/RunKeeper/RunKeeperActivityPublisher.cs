@@ -6,11 +6,14 @@ using System.Text;
 using System.Threading.Tasks;
 using RunKeeper8.Contracts.Services;
 using WindowsPhone.Contracts.Communication.Http;
+using System.IO;
 
 namespace RunKeeper8.Domain.RunKeeper
 {
+
     public class RunKeeperActivityPublisher : IPublishActivity
     {
+        public event PublishComplete OnPublishComplete;
         public IAccount _Account;
         public RunKeeperActivityPublisher(IAccount account)
         {
@@ -30,17 +33,18 @@ namespace RunKeeper8.Domain.RunKeeper
 
             WebHeaderCollection headers = new WebHeaderCollection();
             headers["Authorization"] = string.Format("Bearer {0}", _Account.AccessToken);
-            http.POST(_Account.RecordActivityEndPoint(), System.Text.Encoding.UTF8.GetBytes(json), null, null, null, null, null, null, true, "application/vnd.com.runkeeper.NewFitnessActivity+json", false, null, headers);
+            http.POST(_Account.RecordActivityEndPoint(), System.Text.Encoding.UTF8.GetBytes(json), null, null, null, null, null, "application/vnd.com.runkeeper.NewFitnessActivity+json", true, "application/vnd.com.runkeeper.NewFitnessActivity+json", false, null, headers);
         }
 
-        void http_OnHttpDownloadError(object Sender, Exception exception, string Key)
+        private void http_OnHttpDownloadError(object Sender, Exception exception, string body, string Key)
         {
+            if (OnPublishComplete != null) OnPublishComplete(this, DateTime.Now, false, exception, body);
         }
 
         void http_OnHttpDownloaded(object Sender, byte[] Data, long Duration, string Key, System.Net.WebHeaderCollection Headers = null)
         {
-
-            
+            string body = System.Text.Encoding.UTF8.GetString(Data, 0, Data.Length);
+            if (OnPublishComplete != null) OnPublishComplete(this, DateTime.Now, true, null, body);            
         }
 
     }

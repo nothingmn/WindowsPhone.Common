@@ -1,7 +1,9 @@
 ﻿using System.Device.Location;
 using Ninject.Modules;
+using RunKeeper8.Contracts.Excercise;
 using RunKeeper8.Contracts.Services;
 using RunKeeper8.Contracts.ViewModels;
+using RunKeeper8.Domain.Excercise;
 using RunKeeper8.Domain.Geo;
 using RunKeeper8.Domain.RunKeeper;
 using RunKeeper8.Domain.RunKeeper.v1;
@@ -29,6 +31,12 @@ namespace RunKeeper8.DI.Modules
 
                 Bind<IActivity>().To<Activity>();
                 Bind<IPath>().To<Path>();
+
+                Bind<IHistory>().To<History>();
+                Bind<IHistoryItem>().To<HistoryItem>();
+                Bind<IExcerciseType>().To<ExcerciseType>();
+                Bind<IExcerciseTypes>().To<ExcerciseTypes>();
+
 
             }
         }

@@ -155,4 +155,61 @@
   <data name="Time" xml:space="preserve">
     <value>Time</value>
   </data>
+  <data name="CrossCountrySkiing" xml:space="preserve">
+    <value>Cross-Country Skiing</value>
+  </data>
+  <data name="Cycling" xml:space="preserve">
+    <value>Cycling</value>
+  </data>
+  <data name="Elliptical" xml:space="preserve">
+    <value>Elliptical</value>
+  </data>
+  <data name="Hiking" xml:space="preserve">
+    <value>Hiking</value>
+  </data>
+  <data name="MountainBiking" xml:space="preserve">
+    <value>Mountain Biking</value>
+  </data>
+  <data name="Other" xml:space="preserve">
+    <value>Other</value>
+  </data>
+  <data name="Rowing" xml:space="preserve">
+    <value>Rowing</value>
+  </data>
+  <data name="Running" xml:space="preserve">
+    <value>Running</value>
+  </data>
+  <data name="Skating" xml:space="preserve">
+    <value>Skating</value>
+  </data>
+  <data name="Snowboarding" xml:space="preserve">
+    <value>Snowboarding</value>
+  </data>
+  <data name="Swimming" xml:space="preserve">
+    <value>Swimming</value>
+  </data>
+  <data name="Walking" xml:space="preserve">
+    <value>Walking</value>
+  </data>
+  <data name="Wheelchair" xml:space="preserve">
+    <value>Wheelchair</value>
+  </data>
+  <data name="DownhillSkiing" xml:space="preserve">
+    <value>Downhill Skiing</value>
+  </data>
+  <data name="ExcerciseType" xml:space="preserve">
+    <value>Excercise Type</value>
+  </data>
+  <data name="HomePage1Title" xml:space="preserve">
+    <value>get started</value>
+  </data>
+  <data name="HomePage2Title" xml:space="preserve">
+    <value>get setup</value>
+  </data>
+  <data name="Pause" xml:space="preserve">
+    <value>Pause</value>
+  </data>
+  <data name="Stop" xml:space="preserve">
+    <value>Stop</value>
+  </data>
 </root>

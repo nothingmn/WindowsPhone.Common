@@ -8,6 +8,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:maps="clr-namespace:Microsoft.Phone.Maps.Controls;assembly=Microsoft.Phone.Maps"
     xmlns:util="clr-namespace:RunKeeper8.Utils"
+    xmlns:tool="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
     mc:Ignorable="d"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
@@ -40,6 +41,7 @@
                 Heading="{Binding Heading, Mode=TwoWay}" 
                 Center="{Binding MapCenter, Mode=TwoWay}"
                 ZoomLevel="{Binding ZoomLevel, Mode=TwoWay}"
+               
             >
                 </maps:Map>
 
@@ -70,19 +72,24 @@
                     <TextBlock Text="{Binding PaceDisplay, Mode=TwoWay}" Grid.Column="3" x:Name="paceLabel"
                 HorizontalAlignment="Center" Grid.Row="1"/>
 
-                    <Button Content="{Binding Path=LocalizedResources.Connect, Source={StaticResource LocalizedStrings}}"
-                      Grid.Row="2" Grid.ColumnSpan="2"
-                            Command="{Binding ConnectCommand}"
-                      x:Name="ConnectButton"/>
+                    <TextBlock Grid.ColumnSpan="2" Text="{Binding ActivityType, Mode=TwoWay}" Grid.Column="0" Grid.Row="2"/>
+
                     <Button Content="{Binding Path=LocalizedResources.Start, Source={StaticResource LocalizedStrings}}"
                       Grid.Row="2" Grid.Column="2"  Grid.ColumnSpan="1"
-                            Command="{Binding StartCommand}"
+                            Command="{Binding StartCommand}" Visibility="{Binding StartVisibility, Mode=TwoWay}"
                       x:Name="StartButton"/>
+
+                    <Button Content="{Binding Path=LocalizedResources.Stop, Source={StaticResource LocalizedStrings}}"
+                      Grid.Row="2" Grid.Column="2"  Grid.ColumnSpan="1"
+                            Command="{Binding StopCommand}" Visibility="{Binding StopVisibility, Mode=TwoWay}"/>
+
+                    <Button Content="{Binding Path=LocalizedResources.Pause, Source={StaticResource LocalizedStrings}}"
+                      Grid.Row="2" Grid.Column="3"  Grid.ColumnSpan="1"
+                            Command="{Binding ResumeCommand}" Visibility="{Binding PauseVisibility, Mode=TwoWay}" />
+                    
                     <Button Content="{Binding Path=LocalizedResources.Resume, Source={StaticResource LocalizedStrings}}"
                       Grid.Row="2" Grid.Column="3"  Grid.ColumnSpan="1"
-                            Command="{Binding ResumeCommand}"
-                      x:Name="ResumeButton"/>
-
+                            Command="{Binding ResumeCommand}" Visibility="{Binding ResumeVisibility, Mode=TwoWay}"/>
 
                 </Grid>
             </Grid>

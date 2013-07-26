@@ -84,6 +84,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Excercise\ExcerciseType.cs" />
+    <Compile Include="Excercise\ExcerciseTypes.cs" />
+    <Compile Include="Excercise\History.cs" />
+    <Compile Include="Excercise\HistoryItem.cs" />
     <Compile Include="Geo\AngleConverter.cs" />
     <Compile Include="Geo\DistanceConverter.cs" />
     <Compile Include="Geo\GeoConstants.cs" />
@@ -96,6 +100,7 @@
     <Compile Include="RunKeeper\v1\Activity.cs" />
     <Compile Include="RunKeeper\v1\Path.cs" />
     <Compile Include="RunKeeper\v1\TokenRequestResponse.cs" />
+    <Compile Include="ViewModels\HomeViewModel.cs" />
     <Compile Include="ViewModels\ServiceAccountAuthWebViewModel.cs" />
     <Compile Include="ViewModels\TrackingViewModel.cs" />
   </ItemGroup>
@@ -121,6 +126,7 @@
       <Name>RunKeeper8.Contracts</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion)\Microsoft.$(TargetFrameworkIdentifier).$(TargetFrameworkVersion).Overrides.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion)\Microsoft.$(TargetFrameworkIdentifier).CSharp.targets" />
   <ProjectExtensions />

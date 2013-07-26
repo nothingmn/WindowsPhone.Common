@@ -1,9 +1,11 @@
-﻿using Ninject.Modules;
+﻿using System.Windows.Navigation;
+using Ninject.Modules;
 using WindowsPhone.Common;
 using WindowsPhone.Common.Localization;
 using WindowsPhone.Contracts;
 using WindowsPhone.Contracts.Core;
 using WindowsPhone.Contracts.Localization;
+using WindowsPhone.Contracts.Navigation;
 using WindowsPhone.Contracts.Serialization;
 using WindowsPhone.Serialization.JSON;
 
@@ -21,6 +23,7 @@ namespace WindowsPhone.DI.Modules
                 Bind<ILocalize>().To<SimpleLocalizer>().Named("Simple");
                 Bind<IApplication>().To<Application>().InSingletonScope();
 
+                Bind<INavigationService>().To<WindowsPhone.Common.Navigation.NavigationService>().InSingletonScope();
             }
         }
     }

@@ -26,11 +26,6 @@ namespace RunKeeper8
         {
             InitializeComponent();
 
-            //var channel = DI.Container.Current.Get<IChannel>();
-            var channel1 = DI.Container.Current.Get<IChannel>("byte");
-            var channel2 = DI.Container.Current.Get<IChannel>("string");
-            var channel3 = DI.Container.Current.Get<IChannel>("csv");
-
             dataContext = DI.Container.Current.Get<ITrackingViewModel>();
             this.DataContext = dataContext;
 
@@ -47,19 +42,43 @@ namespace RunKeeper8
             line.StrokeThickness = dataContext.StrokeThickness;
             Map.MapElements.Add(line);
             
+            Loaded += MainPage_Loaded;
+
+        }
+
+        void MainPage_Loaded(object sender, RoutedEventArgs e)
+        {
+            string type = "Walking";
+            NavigationContext.QueryString.TryGetValue("type", out type);
+            dataContext.ActivityType = type;
         }
 
         void MainPage_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             if (e.PropertyName == "StrokeThickness") line.StrokeThickness = dataContext.StrokeThickness;
             if (e.PropertyName == "StrokeColor") line.StrokeColor = dataContext.StrokeColor;
+
+            if (e.PropertyName == "PublishSuccess")
+            {
+                Dispatcher.BeginInvoke(() =>
+                    {
+                        var msg = "Successfully published to RunKeeper!";
+                        if (!dataContext.PublishSuccess) msg = "Failed to publish to Runkeeper!";
+
+                        MessageBox.Show(msg);
+                    });
+            }
+
         }
         MapPolyline line = new MapPolyline();
         void Coordinates_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
-            foreach (var trigger in e.NewItems)
+            if (e.NewItems != null)
             {
-                line.Path.Add(trigger as GeoCoordinate);
+                foreach (var trigger in e.NewItems)
+                {
+                    line.Path.Add(trigger as GeoCoordinate);
+                }
             }
         }
 
