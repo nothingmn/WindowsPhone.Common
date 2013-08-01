@@ -14,7 +14,7 @@ namespace WindowsPhone.DI
             _kernel = new StandardKernel(
                 new Modules.LoggingModule()
                 , new Modules.CommonModule()
-                , new Modules.StorageModule()
+                , new Modules.DataModule()
                 , new Modules.CommunicationModule()
                 );
             //_kernel.Bind().ToSelf();

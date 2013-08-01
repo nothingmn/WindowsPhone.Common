@@ -8,7 +8,8 @@ using System.Windows.Input;
 using System.Windows.Media;
 using Microsoft.Phone.Maps.Controls;
 using System.Device.Location;
-using RunKeeper8.Contracts.Excercise;
+using RunKeeper8.Contracts.Exercise;
+using WindowsPhone.Contracts.Membership;
 
 namespace RunKeeper8.Contracts.ViewModels
 {
@@ -16,19 +17,10 @@ namespace RunKeeper8.Contracts.ViewModels
     {
         string AppTitle { get; }
         IHistory History { get; set; }
-
-
+        IUser User { get; set; }
+        IList<IExerciseType> ExerciseTypes { get; set; }
         ICommand BookmarkCommand { get; }
-        ICommand RunningCommand { get; }
-        ICommand WalkingCommand { get; }
-        ICommand CyclingCommand { get; }
-        ICommand MountainBikingCommand { get; }
-        ICommand HikingCommand { get; }
-        ICommand DownhillSkiingCommand { get; }
-        ICommand CrossCountrySkiingCommand { get; }
-        ICommand SnowboardingCommand { get; }
-        ICommand WheelchairCommand { get; }
-        ICommand OtherCommand { get; }
+        ICommand ExerciseCommand { get; }
         
         
     }

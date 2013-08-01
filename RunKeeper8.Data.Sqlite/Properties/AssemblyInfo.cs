@@ -6,11 +6,11 @@ using System.Resources;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("WindowsPhone.Storage.LocalStorage")]
+[assembly: AssemblyTitle("RunKeeper8.Data.Sqlite")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("WindowsPhone.Storage.LocalStorage")]
+[assembly: AssemblyProduct("RunKeeper8.Data.Sqlite")]
 [assembly: AssemblyCopyright("Copyright ©  2013")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -21,7 +21,7 @@ using System.Resources;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("2bc601f4-64f4-45b5-8905-13fe0bf69133")]
+[assembly: Guid("4e835166-9f39-4cdb-8999-43938cc3ad34")]
 
 // Version information for an assembly consists of the following four values:
 //

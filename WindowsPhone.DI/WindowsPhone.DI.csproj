@@ -88,7 +88,7 @@
     <Compile Include="MockContainer.cs" />
     <Compile Include="Modules\CommonModule.cs" />
     <Compile Include="Modules\CommunicationModule.cs" />
-    <Compile Include="Modules\StorageModule.cs" />
+    <Compile Include="Modules\DataModule.cs" />
     <Compile Include="Modules\LoggingModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StandardContainer.cs" />
@@ -102,6 +102,10 @@
       <Project>{062A43B3-4877-4BBF-87FE-F2E0D9D63122}</Project>
       <Name>WindowsPhone.Contracts</Name>
     </ProjectReference>
+    <ProjectReference Include="..\WindowsPhone.Data\WindowsPhone.Data.csproj">
+      <Project>{01CD3A1B-4CCB-420B-8B41-7D90902D62FA}</Project>
+      <Name>WindowsPhone.Data</Name>
+    </ProjectReference>
     <ProjectReference Include="..\WindowsPhone.Logging\WindowsPhone.Logging.csproj">
       <Project>{3E512359-8B49-4A8E-A6C1-87F1043A22F9}</Project>
       <Name>WindowsPhone.Logging</Name>
@@ -109,10 +113,6 @@
     <ProjectReference Include="..\WindowsPhone.Serialization.JSON\WindowsPhone.Serialization.JSON.csproj">
       <Project>{5F9D4C34-A486-4479-8FA4-442BD9C3774E}</Project>
       <Name>WindowsPhone.Serialization.JSON</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\WindowsPhone.Storage\WindowsPhone.Storage.csproj">
-      <Project>{2BC601F4-64F4-45B5-8905-13FE0BF69133}</Project>
-      <Name>WindowsPhone.Storage</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

@@ -89,6 +89,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\RunKeeper8.Data.Sqlite\RunKeeper8.Data.Sqlite.csproj">
+      <Project>{4E835166-9F39-4CDB-8999-43938CC3AD34}</Project>
+      <Name>RunKeeper8.Data.Sqlite</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\WindowsPhone.Common\WindowsPhone.Common.csproj">
       <Project>{4F50F6DE-20C5-4694-8A95-1E9BB1AA06C1}</Project>
       <Name>WindowsPhone.Common</Name>

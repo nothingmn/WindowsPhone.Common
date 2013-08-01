@@ -4,39 +4,28 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using WindowsPhone.Contracts.Storage;
+using WindowsPhone.Contracts.Repository;
 
 namespace RunKeeper8.Domain.RunKeeper.v1
 {
     public class Account : IAccount
     {
+        private readonly IRepository _repository;
 
-        private IItem _storageFile;
 
-        public Account(IItem storageFile):this()
+        public Account(IRepository repository):this()
         {
-
-            _storageFile = storageFile;
-
-            if (string.IsNullOrEmpty(_storageFile.Name)) _storageFile.Name = "RunKeeperAccessToken";
-            
+            _repository = repository;
         }
         public void Load()
         {
-            _storageFile.Load().Wait();
-            if (_storageFile.Contents != null)
-            {
-                _AccessToken = System.Text.Encoding.UTF8.GetString(_storageFile.Contents, 0, _storageFile.Contents.Length);
-            }
+            //load this from the database
+            
         }
         public void Save()
         {
 
-            _storageFile.Contents = System.Text.Encoding.UTF8.GetBytes(_AccessToken);
-            _storageFile.Save().Wait();
-
         }
-
 
         public Account()
         {

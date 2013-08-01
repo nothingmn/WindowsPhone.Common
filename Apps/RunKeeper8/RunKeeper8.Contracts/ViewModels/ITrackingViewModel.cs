@@ -10,6 +10,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using Microsoft.Phone.Maps.Controls;
 using System.Device.Location;
+using RunKeeper8.Contracts.Exercise;
 
 namespace RunKeeper8.Contracts.ViewModels
 {
@@ -28,7 +29,9 @@ namespace RunKeeper8.Contracts.ViewModels
 
         GeoCoordinate MapCenter { get; set; }
 
-        string ActivityType { get; set; }
+        IExerciseType ExerciseType { get; set; }
+        void SetExerciseTypeId(int Id);
+        
         double ZoomLevel { get; set; }
         double Heading { get; set; }
         double Pitch { get; set; }

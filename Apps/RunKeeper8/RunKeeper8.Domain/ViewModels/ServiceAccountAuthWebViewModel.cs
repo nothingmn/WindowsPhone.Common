@@ -8,8 +8,6 @@ using RunKeeper8.Contracts.ViewModels;
 using RunKeeper8.Domain.RunKeeper.v1;
 using WindowsPhone.Common.ViewModels;
 using WindowsPhone.Contracts.Communication.Http;
-using WindowsPhone.Contracts.Storage;
-using WindowsPhone.Storage;
 
 namespace RunKeeper8.Domain.ViewModels
 {
@@ -23,10 +21,10 @@ namespace RunKeeper8.Domain.ViewModels
         }
 
         private IAccount _serviceAccount;
-        public IAccount ServiceAccount { get { return _serviceAccount; } set { _serviceAccount = value; base.OnPropertyChanged("ServiceAccount"); } }
+        public IAccount ServiceAccount { get { return _serviceAccount; } set { _serviceAccount = value; base.Dispatcher("ServiceAccount"); } }
 
         private string _Url;
-        public string Url { get { return _Url; } set { _Url = value; base.OnPropertyChanged("Url"); } }
+        public string Url { get { return _Url; } set { _Url = value; base.Dispatcher("Url"); } }
 
         public void UpdateAccessCode(string code)
         {
@@ -52,7 +50,7 @@ namespace RunKeeper8.Domain.ViewModels
         {
             _serviceAccount.AccessToken = token;
 
-            OnPropertyChanged("ServiceAccount");
+            Dispatcher("ServiceAccount");
         }
     }
 }

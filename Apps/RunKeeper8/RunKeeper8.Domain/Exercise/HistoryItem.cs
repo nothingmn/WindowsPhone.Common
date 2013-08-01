@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using RunKeeper8.Contracts.Excercise;
+using RunKeeper8.Contracts.Exercise;
 
-namespace RunKeeper8.Domain.Excercise
+namespace RunKeeper8.Domain.Exercise
 {
     public class HistoryItem : IHistoryItem     
     {

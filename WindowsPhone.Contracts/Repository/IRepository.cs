@@ -3,14 +3,14 @@ using System.Threading.Tasks;
 
 namespace WindowsPhone.Contracts.Repository
 {
-    public interface IRepository    
+    public interface IRepository
     {
-        Task<T> Single<T>(object primaryKey) where T : class;
-        Task<IEnumerable<T>> Query<T>() where T : class;
-        Task<IPage<T>> PagedQuery<T>(long pageNumber, long itemsPerPage, string sql, params object[] args) where T : class;
-        Task<long> Insert(object itemToAdd);
-        Task<long> Update(object itemToUpdate, object primaryKeyValue);
-        Task<long> Delete<T>(object primaryKeyValue) where T : class;
+        Task<T> Single<T>(object primaryKey) where T : class, new();
+        Task<IList<T>> Query<T>(string sql, params object[] args) where T : class, new();
+        //Task<IPage<T>> PagedQuery<T>(long pageNumber, long itemsPerPage, string sql, params object[] args) where T : class, new();
+        Task<int> Insert<T>(object itemToAdd) where T : class, new();
+        Task<int> Update<T>(object itemToUpdate, object primaryKeyValue) where T : class, new();
+        Task<int> Delete<T>(object primaryKeyValue) where T : class, new();
 
     }
 }

@@ -136,16 +136,16 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Assets\Activities\bike.png" />
-    <Content Include="Assets\Activities\crosscountryskiing.png" />
-    <Content Include="Assets\Activities\hike.png" />
-    <Content Include="Assets\Activities\mountainbike.png" />
-    <Content Include="Assets\Activities\other.png" />
-    <Content Include="Assets\Activities\running.png" />
-    <Content Include="Assets\Activities\skiing.png" />
-    <Content Include="Assets\Activities\snowboarding.png" />
-    <Content Include="Assets\Activities\walking.png" />
-    <Content Include="Assets\Activities\wheelchair.png" />
+    <Content Include="Assets\Exercises\bike.png" />
+    <Content Include="Assets\Exercises\crosscountryskiing.png" />
+    <Content Include="Assets\Exercises\hike.png" />
+    <Content Include="Assets\Exercises\mountainbike.png" />
+    <Content Include="Assets\Exercises\other.png" />
+    <Content Include="Assets\Exercises\running.png" />
+    <Content Include="Assets\Exercises\skiing.png" />
+    <Content Include="Assets\Exercises\snowboarding.png" />
+    <Content Include="Assets\Exercises\walking.png" />
+    <Content Include="Assets\Exercises\wheelchair.png" />
     <Content Include="Assets\AlignmentGrid.png" />
     <Content Include="Assets\ApplicationIcon.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

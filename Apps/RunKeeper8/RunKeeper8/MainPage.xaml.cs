@@ -38,6 +38,8 @@ namespace RunKeeper8
             dataContext.Coordinates.CollectionChanged += Coordinates_CollectionChanged;
 
             (dataContext as ViewModelBase).PropertyChanged += MainPage_PropertyChanged;
+            (dataContext as ViewModelBase).Attach(this);
+
             line.StrokeColor = dataContext.StrokeColor;
             line.StrokeThickness = dataContext.StrokeThickness;
             Map.MapElements.Add(line);
@@ -46,11 +48,17 @@ namespace RunKeeper8
 
         }
 
-        void MainPage_Loaded(object sender, RoutedEventArgs e)
+        private void MainPage_Loaded(object sender, RoutedEventArgs e)
         {
-            string type = "Walking";
-            NavigationContext.QueryString.TryGetValue("type", out type);
-            dataContext.ActivityType = type;
+            string type = "0";
+            if (!NavigationContext.QueryString.TryGetValue("type", out type))
+            {
+                type = "1";
+            }
+            int id = 0;
+            if (!int.TryParse(type, out id)) id = 1;
+
+            dataContext.SetExerciseTypeId(id);
         }
 
         void MainPage_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)

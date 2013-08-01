@@ -83,9 +83,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Excercise\IExcerciseType.cs" />
-    <Compile Include="Excercise\IExcerciseTypes.cs" />
-    <Compile Include="Excercise\IHistoryItem.cs" />
+    <Compile Include="Exercise\IExerciseType.cs" />
+    <Compile Include="Exercise\IHistoryItem.cs" />
     <Compile Include="Geo\DistanceUnit.cs" />
     <Compile Include="Geo\IAngleConverter.cs" />
     <Compile Include="Geo\IBearingCalculator.cs" />
@@ -99,12 +98,17 @@
     <Compile Include="Services\IActivity.cs" />
     <Compile Include="Services\IPath.cs" />
     <Compile Include="Services\IPublishActivity.cs" />
-    <Compile Include="Excercise\IHistory.cs" />
+    <Compile Include="Exercise\IHistory.cs" />
     <Compile Include="ViewModels\IHomeViewModel.cs" />
     <Compile Include="ViewModels\IOAuthViewModel.cs" />
     <Compile Include="ViewModels\ITrackingViewModel.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\WindowsPhone.Contracts\WindowsPhone.Contracts.csproj">
+      <Project>{062A43B3-4877-4BBF-87FE-F2E0D9D63122}</Project>
+      <Name>WindowsPhone.Contracts</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion)\Microsoft.$(TargetFrameworkIdentifier).$(TargetFrameworkVersion).Overrides.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion)\Microsoft.$(TargetFrameworkIdentifier).CSharp.targets" />
   <ProjectExtensions />

@@ -15,25 +15,29 @@ namespace RunKeeper8.Domain.RunKeeper
     {
         public event PublishComplete OnPublishComplete;
         public IAccount _Account;
+        bool CanPublish { get { return !string.IsNullOrEmpty(_Account.AccessToken); } }
         public RunKeeperActivityPublisher(IAccount account)
         {
-            _Account = account;
-
-            if(string.IsNullOrEmpty(_Account.AccessToken)) _Account.Load();
+            _Account = account;            
 
         }
         public void Publish(IActivity activity)
         {
-            var http = WindowsPhone.DI.Container.Current.Get<IHttpClient>();
-            http.OnHttpDownloaded += http_OnHttpDownloaded;
-            http.OnHttpDownloadError += http_OnHttpDownloadError;
-            var serializer =
-                WindowsPhone.DI.Container.Current.Get<WindowsPhone.Contracts.Serialization.ISerialize>("JSON");
-            var json = serializer.Serialize(activity);
+            if (CanPublish)
+            {
+                var http = WindowsPhone.DI.Container.Current.Get<IHttpClient>();
+                http.OnHttpDownloaded += http_OnHttpDownloaded;
+                http.OnHttpDownloadError += http_OnHttpDownloadError;
+                var serializer =
+                    WindowsPhone.DI.Container.Current.Get<WindowsPhone.Contracts.Serialization.ISerialize>("JSON");
+                var json = serializer.Serialize(activity);
 
-            WebHeaderCollection headers = new WebHeaderCollection();
-            headers["Authorization"] = string.Format("Bearer {0}", _Account.AccessToken);
-            http.POST(_Account.RecordActivityEndPoint(), System.Text.Encoding.UTF8.GetBytes(json), null, null, null, null, null, "application/vnd.com.runkeeper.NewFitnessActivity+json", true, "application/vnd.com.runkeeper.NewFitnessActivity+json", false, null, headers);
+                WebHeaderCollection headers = new WebHeaderCollection();
+                headers["Authorization"] = string.Format("Bearer {0}", _Account.AccessToken);
+                http.POST(_Account.RecordActivityEndPoint(), System.Text.Encoding.UTF8.GetBytes(json), null, null, null,
+                          null, null, "application/vnd.com.runkeeper.NewFitnessActivity+json", true,
+                          "application/vnd.com.runkeeper.NewFitnessActivity+json", false, null, headers);
+            }
         }
 
         private void http_OnHttpDownloadError(object Sender, Exception exception, string body, string Key)

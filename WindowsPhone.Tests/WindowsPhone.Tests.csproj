@@ -73,7 +73,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="StorageTests.cs" />
+    <Compile Include="DataTests.cs" />
     <Compile Include="LocalizedStrings.cs" />
     <Compile Include="Serialization.cs" />
     <Compile Include="MainPage.xaml.cs">
@@ -135,6 +135,10 @@
     <ProjectReference Include="..\WindowsPhone.Contracts\WindowsPhone.Contracts.csproj">
       <Project>{062A43B3-4877-4BBF-87FE-F2E0D9D63122}</Project>
       <Name>WindowsPhone.Contracts</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WindowsPhone.Data\WindowsPhone.Data.csproj">
+      <Project>{01CD3A1B-4CCB-420B-8B41-7D90902D62FA}</Project>
+      <Name>WindowsPhone.Data</Name>
     </ProjectReference>
     <ProjectReference Include="..\WindowsPhone.DI\WindowsPhone.DI.csproj">
       <Project>{FDF7C488-3AD4-4D97-96E0-DE99CECB13FF}</Project>

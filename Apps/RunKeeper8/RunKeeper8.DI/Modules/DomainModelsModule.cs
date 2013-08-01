@@ -1,9 +1,9 @@
 ﻿using System.Device.Location;
 using Ninject.Modules;
-using RunKeeper8.Contracts.Excercise;
+using RunKeeper8.Contracts.Exercise;
 using RunKeeper8.Contracts.Services;
 using RunKeeper8.Contracts.ViewModels;
-using RunKeeper8.Domain.Excercise;
+using RunKeeper8.Domain.Exercise;
 using RunKeeper8.Domain.Geo;
 using RunKeeper8.Domain.RunKeeper;
 using RunKeeper8.Domain.RunKeeper.v1;
@@ -25,17 +25,18 @@ namespace RunKeeper8.DI.Modules
 
 #endif
 
-                Bind<IAccount>().To<Account>();
+
+                Bind<IAccount>().To<Account>().InSingletonScope();//.BindingConfiguration.IsImplicit = true;
+                //Bind<IAccount>().To<WindowsPhone.Data.DTO.Account>().Named("DTO");
 
                 Bind<IPublishActivity>().To<RunKeeperActivityPublisher>();
 
                 Bind<IActivity>().To<Activity>();
                 Bind<IPath>().To<Path>();
 
-                Bind<IHistory>().To<History>();
+                Bind<IHistory>().To<History>().InSingletonScope();
                 Bind<IHistoryItem>().To<HistoryItem>();
-                Bind<IExcerciseType>().To<ExcerciseType>();
-                Bind<IExcerciseTypes>().To<ExcerciseTypes>();
+                Bind<IExerciseType>().To<ExerciseType>();
 
 
             }

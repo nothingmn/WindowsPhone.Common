@@ -17,9 +17,5 @@
         string RecordActivityEndPoint();
 
         string RecordActivityUrl { get; set; }
-
-        void Load();
-        void Save();
-
     }
 }

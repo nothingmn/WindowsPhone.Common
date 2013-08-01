@@ -8,6 +8,7 @@ using System.Windows.Navigation;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using RunKeeper8.Contracts.ViewModels;
+using WindowsPhone.Common.ViewModels;
 using WindowsPhone.Contracts.Navigation;
 
 namespace RunKeeper8
@@ -29,7 +30,16 @@ namespace RunKeeper8
             INavigationService nav = DI.Container.Current.Get<INavigationService>();
             nav.SetCurrentService(NavigationService);
             model = DI.Container.Current.Get<IHomeViewModel>();
-            this.DataContext = model;
+            (model as ViewModelBase).Attach(this);
+            LayoutRoot.DataContext  = model;
+
         }
+
+        private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
+        {
+            model.ExerciseCommand.Execute(e);
+
+        }
+
     }
 }

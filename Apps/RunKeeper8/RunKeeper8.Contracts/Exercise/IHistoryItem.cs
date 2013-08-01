@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace RunKeeper8.Contracts.Excercise
+namespace RunKeeper8.Contracts.Exercise
 {
     public interface IHistoryItem
     {

@@ -13,9 +13,11 @@ using System.Windows.Media;
 using System.Windows.Threading;
 using Microsoft.Phone.Maps.Controls;
 using Microsoft.Phone.Shell;
+using RunKeeper8.Contracts.Exercise;
 using RunKeeper8.Contracts.Geo;
 using RunKeeper8.Contracts.Services;
 using RunKeeper8.Contracts.ViewModels;
+using RunKeeper8.Domain.Exercise;
 using RunKeeper8.Domain.Geo;
 using WindowsPhone.Common.Command;
 using WindowsPhone.Common.ViewModels;
@@ -23,13 +25,38 @@ using WindowsPhone.Contracts;
 using WindowsPhone.Contracts.Localization;
 using WindowsPhone.Contracts.Logging;
 using System.ComponentModel;
+using WindowsPhone.Contracts.Repository;
 
 namespace RunKeeper8.Domain.ViewModels
 {
     public class TrackingViewModel : ViewModelBase, ITrackingViewModel, INotifyPropertyChanged
     {
-        private string _activityType = "Walking";
-        public string ActivityType { get { return _activityType.Replace("+"," "); } set { _activityType = value; base.OnPropertyChanged("ActivityType"); } }
+        private IExerciseType _exerciseType;
+
+        public IExerciseType ExerciseType
+        {
+            get { return _exerciseType; }
+            set
+            {
+                _exerciseType = value;
+                Dispatcher("ExerciseType");
+            }
+        }
+
+        public void SetExerciseTypeId(int Id)
+        {
+            
+
+            _repository.Single<ExerciseType>(Id).ContinueWith(t =>
+                {
+                    ExerciseType = t.Result;
+                    ExerciseType.DisplayOrder++;
+
+                    _repository.Update<ExerciseType>(ExerciseType);
+                });
+        }
+
+
         private ILog _log;
         private ILocalize _localize;
         private IApplication _application;
@@ -48,13 +75,18 @@ namespace RunKeeper8.Domain.ViewModels
 
         public IAccount Account { get; set; }
 
-        public TrackingViewModel(ILog log, IAccount account, ILocalize localize, IApplication application, IGeoPositionWatcher<GeoCoordinate> coordinateProvider)
+        private IHistory _history;
+        private readonly IRepository _repository;
+
+        public TrackingViewModel(ILog log, IAccount account, ILocalize localize, IApplication application, IGeoPositionWatcher<GeoCoordinate> coordinateProvider, IHistory history, IRepository repository)
         {
             _log = log;
             _localize = localize;
             _application = application;
             _coordinateProvider = coordinateProvider;
-            Account = account;
+            _history = history;
+            _repository = repository;
+            Account = account;        
 
             _started = false;
             _startTime = System.Environment.TickCount;
@@ -135,7 +167,7 @@ namespace RunKeeper8.Domain.ViewModels
                         });
 
                     this.Coordinates.Add(coord);
-                    OnPropertyChanged("Coordinates");
+                    Dispatcher("Coordinates");
                     _previousPositionChangeTick = System.Environment.TickCount;
 
 
@@ -219,6 +251,7 @@ namespace RunKeeper8.Domain.ViewModels
                 return stopCommand;
             }
         }
+
         public void Stop()
         {
 
@@ -229,71 +262,82 @@ namespace RunKeeper8.Domain.ViewModels
             ZoomLevel = 15;
             Pitch = 55;
 
+         
+            var activity = WindowsPhone.DI.Container.Current.Get<IActivity>();
+
+            activity.detect_pauses = true;
+            activity.duration = Time.TotalSeconds;
+            activity.total_calories = Calories;
+            activity.total_distance = Distance/1000; //distance is in KM's and we need M's
+            activity.equipment = "None";
+            activity.type = ExerciseType.TypeName;
+            activity.start_time = _startedAt.ToUniversalTime().ToString(DateTimeFormatInfo.CurrentInfo.RFC1123Pattern);
+
+
+            activity.notes = string.Format("I just {0} for ", activity.type.Replace("ing", "ed"));
+            if (Time.TotalHours >= 1)
+            {
+                activity.notes = activity.notes +
+                                 string.Format("{0} hours, ", Time.TotalHours.ToString("0"));
+            }
+            activity.notes = activity.notes +
+                             string.Format(
+                                 "{0} minutes for a distance of {2}, and burned {1} calories!",
+                                 Time.TotalMinutes.ToString("0.0"),
+                                 activity.total_calories.ToString("0.0"),
+                                 activity.total_distance.ToString("0.0"));
+
+            //move to settings
+            activity.post_to_facebook = false;
+            activity.post_to_twitter = false;
+
+            activity.path = new List<IPath>();
+
+            var counter = 0;
+            foreach (var c in Coordinates)
+            {
+                var path = WindowsPhone.DI.Container.Current.Get<IPath>();
+                path.altitude = c.Altitude;
+                path.latitude = c.Latitude;
+                path.longitude = c.Longitude;
+                if (counter == 0)
+                {
+                    path.type = "Start";
+                }
+                else if (counter == Coordinates.Count - 1)
+                {
+                    path.type = "End";
+                }
+                else
+                {
+                    path.type = "gps";
+                }
+
+                activity.path.Add(path);
+                counter++;
+            }
+
+            IHistoryItem item = WindowsPhone.DI.Container.Current.Get<IHistoryItem>();
+            item.DisplayName = string.Format("{0} - {1}", ExerciseType.DisplayName, DateTime.Now.ToString(DateTimeFormatInfo.CurrentInfo.RFC1123Pattern));
+            item.Timestamp = DateTime.Now;
+            item.HistoryType = activity.GetType().FullName;
+            item.Id = item.DisplayName;
+            item.HistoryData = activity;
+
+            _history.HistoryItems.Add(item);
+            _history.Save();
+
+
             if (!string.IsNullOrEmpty(Account.AccessToken))
             {
                 var result = MessageBox.Show("Do you want to publish this to RunKeeper?", "Publish?",
                                              MessageBoxButton.OKCancel);
                 if (result == MessageBoxResult.OK)
                 {
-                    var activity = WindowsPhone.DI.Container.Current.Get<IActivity>();
-
-                    activity.detect_pauses = true;
-                    activity.duration = Time.TotalSeconds;
-                    activity.total_calories = Calories;
-                    activity.total_distance = Distance / 1000; //distance is in KM's and we need M's
-                    activity.equipment = "None";
-                    activity.type = ActivityType;
-                    activity.start_time = _startedAt.ToUniversalTime().ToString(DateTimeFormatInfo.CurrentInfo.RFC1123Pattern);
-
-
-                    activity.notes = string.Format("I just {0} for ", activity.type.Replace("ing", "ed"));
-                    if (Time.TotalHours >= 1)
-                    {
-                        activity.notes = activity.notes +
-                                         string.Format("{0} hours, ", Time.TotalHours.ToString("0"));
-                    }
-                    activity.notes = activity.notes +
-                                     string.Format(
-                                         "{0} minutes for a distance of {2}, and burned {1} calories!",
-                                         Time.TotalMinutes.ToString("0.0"),
-                                         activity.total_calories.ToString("0.0"),
-                                         activity.total_distance.ToString("0.0"));
-
-                    //move to settings
-                    activity.post_to_facebook = false;
-                    activity.post_to_twitter = false;
-
-                    activity.path = new List<IPath>();
-
-                    var counter = 0;
-                    foreach (var c in Coordinates)
-                    {
-                        var path = WindowsPhone.DI.Container.Current.Get<IPath>();
-                        path.altitude = c.Altitude;
-                        path.latitude = c.Latitude;
-                        path.longitude = c.Longitude;
-                        if (counter == 0)
-                        {
-                            path.type = "Start";
-                        }
-                        else if (counter == Coordinates.Count - 1)
-                        {
-                            path.type = "End";
-                        }
-                        else
-                        {
-                            path.type = "gps";
-                        }
-
-                        activity.path.Add(path);
-                        counter++;
-                    }
-
-
-
                     var publisher = WindowsPhone.DI.Container.Current.Get<IPublishActivity>();
                     publisher.OnPublishComplete += publisher_OnPublishComplete;
                     publisher.Publish(activity);
+
                 }
             }
 
@@ -329,7 +373,7 @@ namespace RunKeeper8.Domain.ViewModels
             PauseVisibility = (!_paused ? Visibility.Visible : Visibility.Collapsed);
             ResumeVisibility = (_paused ? Visibility.Visible : Visibility.Collapsed);
 
-            OnPropertyChanged("Coordinates");
+            Dispatcher("Coordinates");
         }
 
 
@@ -342,7 +386,7 @@ namespace RunKeeper8.Domain.ViewModels
             set
             {
                 _PublishSuccess = value;
-                OnPropertyChanged("PublishSuccess");
+                Dispatcher("PublishSuccess");
             }
         }
 
@@ -414,7 +458,7 @@ namespace RunKeeper8.Domain.ViewModels
             set
             {
                 _MapCenter = value;
-                base.OnPropertyChanged("MapCenter");
+                base.Dispatcher("MapCenter");
             }
         }
 
@@ -428,7 +472,7 @@ namespace RunKeeper8.Domain.ViewModels
             set
             {
                 _StrokeColor = value;
-                OnPropertyChanged("StrokeColor");
+                Dispatcher("StrokeColor");
             }
         }
 
@@ -440,7 +484,7 @@ namespace RunKeeper8.Domain.ViewModels
             set
             {
                 _StrokeThickness = value;
-                OnPropertyChanged("StrokeThickness");
+                Dispatcher("StrokeThickness");
             }
         }
 
@@ -453,7 +497,7 @@ namespace RunKeeper8.Domain.ViewModels
             set
             {
                 _Coordinates = value;
-                OnPropertyChanged("Coordinates");
+                Dispatcher("Coordinates");
             }
         }
 
@@ -467,7 +511,7 @@ namespace RunKeeper8.Domain.ViewModels
             set
             {
                 _ZoomLevel = value;
-                OnPropertyChanged("ZoomLevel");
+                Dispatcher("ZoomLevel");
             }
         }
 
@@ -479,7 +523,7 @@ namespace RunKeeper8.Domain.ViewModels
             set
             {
                 _Heading = value;
-                OnPropertyChanged("Heading");
+                Dispatcher("Heading");
             }
         }
 
@@ -491,7 +535,7 @@ namespace RunKeeper8.Domain.ViewModels
             set
             {
                 _Pitch = value;
-                OnPropertyChanged("Pitch");
+                Dispatcher("Pitch");
             }
         }
 
@@ -503,7 +547,7 @@ namespace RunKeeper8.Domain.ViewModels
             set
             {
                 _PedestrianFeaturesEnabled = value;
-                OnPropertyChanged("PedestrianFeaturesEnabled");
+                Dispatcher("PedestrianFeaturesEnabled");
             }
         }
 
@@ -515,7 +559,7 @@ namespace RunKeeper8.Domain.ViewModels
             set
             {
                 _LandmarksEnabled = value;
-                OnPropertyChanged("LandmarksEnabled");
+                Dispatcher("LandmarksEnabled");
             }
         }
 
@@ -527,7 +571,7 @@ namespace RunKeeper8.Domain.ViewModels
             set
             {
                 _Distance = value;
-                OnPropertyChanged("Distance");
+                Dispatcher("Distance");
             }
         }
 
@@ -539,7 +583,7 @@ namespace RunKeeper8.Domain.ViewModels
             set
             {
                 _Time = value;
-                OnPropertyChanged("Time");
+                Dispatcher("Time");
             }
         }
 
@@ -551,7 +595,7 @@ namespace RunKeeper8.Domain.ViewModels
             set
             {
                 _Calories = value;
-                OnPropertyChanged("Calories");
+                Dispatcher("Calories");
             }
         }
 
@@ -563,7 +607,7 @@ namespace RunKeeper8.Domain.ViewModels
             set
             {
                 _Pace = value;
-                OnPropertyChanged("Pace");
+                Dispatcher("Pace");
             }
         }
 
@@ -575,7 +619,7 @@ namespace RunKeeper8.Domain.ViewModels
             set
             {
                 _DistanceDisplay = value;
-                OnPropertyChanged("DistanceDisplay");
+                Dispatcher("DistanceDisplay");
             }
         }
 
@@ -587,7 +631,7 @@ namespace RunKeeper8.Domain.ViewModels
             set
             {
                 _TimeDisplay = value;
-                OnPropertyChanged("TimeDisplay");
+                Dispatcher("TimeDisplay");
             }
         }
 
@@ -599,7 +643,7 @@ namespace RunKeeper8.Domain.ViewModels
             set
             {
                 _CaloriesDisplay = value;
-                OnPropertyChanged("CaloriesDisplay");
+                Dispatcher("CaloriesDisplay");
             }
         }
 
@@ -611,7 +655,7 @@ namespace RunKeeper8.Domain.ViewModels
             set
             {
                 _PaceDisplay = value;
-                OnPropertyChanged("PaceDisplay");
+                Dispatcher("PaceDisplay");
             }
         }
 
@@ -622,7 +666,7 @@ namespace RunKeeper8.Domain.ViewModels
             set
             {
                 _StopVisibility = value;
-                OnPropertyChanged("StopVisibility");
+                Dispatcher("StopVisibility");
             }
         }
         private Visibility _StartVisibility;
@@ -632,7 +676,7 @@ namespace RunKeeper8.Domain.ViewModels
             set
             {
                 _StartVisibility = value;
-                OnPropertyChanged("StartVisibility");
+                Dispatcher("StartVisibility");
             }
         }
         private Visibility _PauseVisibility;
@@ -642,7 +686,7 @@ namespace RunKeeper8.Domain.ViewModels
             set
             {
                 _PauseVisibility = value;
-                OnPropertyChanged("PauseVisibility");
+                Dispatcher("PauseVisibility");
             }
         }
         private Visibility _ResumeVisibility;
@@ -652,7 +696,7 @@ namespace RunKeeper8.Domain.ViewModels
             set
             {
                 _ResumeVisibility = value;
-                OnPropertyChanged("ResumeVisibility");
+                Dispatcher("ResumeVisibility");
             }
         }
 
