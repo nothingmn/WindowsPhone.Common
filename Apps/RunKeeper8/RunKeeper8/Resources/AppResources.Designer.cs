@@ -79,7 +79,7 @@ namespace RunKeeper8.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to RUNKEEPER 8.
+        ///   Looks up a localized string similar to Exerciser.
         /// </summary>
         public static string ApplicationTitle {
             get {
@@ -187,6 +187,24 @@ namespace RunKeeper8.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Please wait while we configure your phone..
+        /// </summary>
+        public static string InitialLoadMessage {
+            get {
+                return ResourceManager.GetString("InitialLoadMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Login to Runkeeper.
+        /// </summary>
+        public static string LoginToRunkeeper {
+            get {
+                return ResourceManager.GetString("LoginToRunkeeper", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Mountain Biking.
         /// </summary>
         public static string MountainBiking {
@@ -210,6 +228,15 @@ namespace RunKeeper8.Resources {
         public static string Pace {
             get {
                 return ResourceManager.GetString("Pace", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pair with AGENT Smartwatch.
+        /// </summary>
+        public static string PairWithAgent {
+            get {
+                return ResourceManager.GetString("PairWithAgent", resourceCulture);
             }
         }
         

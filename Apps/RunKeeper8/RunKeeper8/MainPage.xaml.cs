@@ -90,14 +90,5 @@ namespace RunKeeper8
             }
         }
 
-        private void PairMenuItem_Click(object sender, EventArgs e)
-        {
-            dataContext.PairCommand.Execute(null);
-        }
-
-        private void RunKeeperLoginMenuItem_Click(object sender, EventArgs e)
-        {
-            NavigationService.Navigate(new Uri("/UI/OAuthWebViewPage.xaml", UriKind.RelativeOrAbsolute));
-        }
     }
 }

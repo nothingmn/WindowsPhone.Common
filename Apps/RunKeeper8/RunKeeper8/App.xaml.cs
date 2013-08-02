@@ -40,7 +40,7 @@ namespace RunKeeper8
 
 
             IApplication application = DI.Container.Current.Get<IApplication>();
-            application.Name = "RunKeeper 8";
+            application.Name = "Exerciser";
 
 
             // Show graphics profiling information while debugging.

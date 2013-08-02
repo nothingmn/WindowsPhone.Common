@@ -2,10 +2,11 @@
 using System.Diagnostics;
 using System.Threading;
 using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
+using WindowsPhone.Common.Membership;
 using WindowsPhone.Contracts.Logging;
+using WindowsPhone.Contracts.Membership;
 using WindowsPhone.Contracts.Repository;
 using WindowsPhone.Contracts.Serialization;
-using WindowsPhone.Data.DTO;
 
 namespace WindowsPhone.Tests
 {
@@ -28,34 +29,78 @@ namespace WindowsPhone.Tests
             }).Wait();
         }
 
+        public IUser GetUser()
+        {
+            var user = DI.Container.Current.Get<IUser>();
+            user.Email = "rob.chartier@gmail.com";
+            user.FirstName = "Rob";
+            user.LastName = "Chartier";
+
+            return user;
+        }
+        [TestMethod]
+        public void AlotOfInserts()
+        {
+
+            //arrange
+            var repo = DI.Container.Current.Get<IRepository>();
+            var user = GetUser();
+            //act
+
+            for (int x = 0; x < 10; x++)
+            {
+                user.Id = 0;
+                user.DisplayName = user.DisplayName + "_" + x.ToString();
+                repo.Insert<User>(user).ContinueWith(t =>
+                    {
+                        int count = t.Result;
+
+                        repo.Single<User>(user.Id).ContinueWith(u =>
+                            {
+                                //assert
+                                var userFromDB = u.Result;
+                                Assert.AreEqual(user.Email, userFromDB.Email);
+                                Assert.AreEqual(user.FirstName, userFromDB.FirstName);
+                                Assert.AreEqual(user.LastName, userFromDB.LastName);
+                                Assert.AreEqual(user.Id, userFromDB.Id);
+
+
+                            }).Wait();
+
+                    }).Wait();
+
+            }
+        }
+
         [TestMethod]
         public void Insert_New_User()
         {
             //arrange
             var repo = DI.Container.Current.Get<IRepository>();
-
+            var user = GetUser();
             //act
-            int id = -1;
-            var user = new User() { Email="rob@home.com", FirstName="Rob", LastName="C"};
-            repo.Insert<User>(user).ContinueWith(t =>
+          repo.Insert<User>(user).ContinueWith(t =>
                 {
-                   id = t.Result;
-                    user.Id = id;
+                   int count = t.Result;
+
+                   repo.Single<User>(user.Id).ContinueWith(u =>
+                   {
+                       //assert
+                       var userFromDB = u.Result;
+                       Assert.AreEqual(user.Email, userFromDB.Email);
+                       Assert.AreEqual(user.FirstName, userFromDB.FirstName);
+                       Assert.AreEqual(user.LastName, userFromDB.LastName);
+                       Assert.AreEqual(user.Id, userFromDB.Id);
+
+
+
+                       //clean up
+                       repo.Delete<User>(userFromDB).Wait();
+
+                   }).Wait();
+
                 }).Wait();
 
-            repo.Single<User>(id).ContinueWith(t =>
-                {
-                    //assert
-                    var userFromDB = t.Result;
-                    Assert.AreEqual(user.Email, userFromDB.Email);
-                    Assert.AreEqual(user.FirstName, userFromDB.FirstName);
-                    Assert.AreEqual(user.LastName, userFromDB.LastName);
-                    Assert.AreEqual(user.Id, userFromDB.Id);
-
-                }).Wait();
-
-            //clean up
-            repo.Delete<User>(user).Wait();
 
         }
 
@@ -66,18 +111,17 @@ namespace WindowsPhone.Tests
             var repo = DI.Container.Current.Get<IRepository>();
 
             //act
-            int id = -1;
-            var user = new User() { Email = "rob@home.com", FirstName = "Rob", LastName = "C" };
+            var user = GetUser();
             repo.Insert<User>(user).ContinueWith(t =>
             {
-                id = t.Result;
-                user.Id = id;
+                int count = t.Result;
+                _log.InfoFormat("Delete, during insert:user.id=", user.Id);
             }).Wait();
 
             //clean up
             repo.Delete<User>(user).Wait();
 
-            repo.Single<User>(id).ContinueWith(t =>
+            repo.Single<User>(user.Id).ContinueWith(t =>
             {
                 //assert
                 Assert.IsNull(t.Result);
@@ -91,17 +135,15 @@ namespace WindowsPhone.Tests
             //arrange
             var repo = DI.Container.Current.Get<IRepository>();
 
+            var user = GetUser();
             //act
-            int id = -1;
-            var user = new User() { Email = "rob@home.com", FirstName = "Rob", LastName = "C" };
             repo.Insert<User>(user).ContinueWith(t =>
-            {
-                id = t.Result;
-                user.Id = id;
-            }).Wait();
+                {
+                    int count = t.Result;
+                }).Wait();
 
 
-            repo.Query<User>("select * from user where id=?", new object[]{id}).ContinueWith(t =>
+            repo.Query<User>("select * from user where id=?", new object[]{user.Id}).ContinueWith(t =>
             {
                 //assert
                 var userFromDB = t.Result[0];
@@ -128,20 +170,18 @@ namespace WindowsPhone.Tests
             var repo = DI.Container.Current.Get<IRepository>();
 
             //act
-            int id = -1;
-            var user = new User() { Email = "rob@home.com", FirstName = "Rob", LastName = "C" };
+            var user = GetUser();
             repo.Insert<User>(user).ContinueWith(t =>
-            {
-                id = t.Result;
-                user.Id = id;
-            }).Wait();
+                {
+                    int count = t.Result;
+                }).Wait();
 
 
             //act
             user.DisplayName = "John Doe";
             repo.Update<User>(user, user.Id).Wait();
 
-            repo.Query<User>("select * from user where id=?", new object[] { id }).ContinueWith(t =>
+            repo.Query<User>("select * from user where id=?", new object[] { user.Id }).ContinueWith(t =>
             {
                 //assert
                 var userFromDB = t.Result[0];

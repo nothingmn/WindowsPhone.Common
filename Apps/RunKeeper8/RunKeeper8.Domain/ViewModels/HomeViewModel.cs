@@ -1,25 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Device.Location;
-using System.Globalization;
 using System.Linq;
-using System.Resources;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Navigation;
-using System.Windows.Threading;
-using Microsoft.Phone.Maps.Controls;
-using Microsoft.Phone.Shell;
 using RunKeeper8.Contracts.Exercise;
-using RunKeeper8.Contracts.Geo;
 using RunKeeper8.Contracts.Services;
 using RunKeeper8.Contracts.ViewModels;
 using RunKeeper8.Domain.Exercise;
-using RunKeeper8.Domain.Geo;
 using WindowsPhone.Common.Command;
 using WindowsPhone.Common.Membership;
 using WindowsPhone.Common.ViewModels;
@@ -35,7 +22,6 @@ namespace RunKeeper8.Domain.ViewModels
 {
     public class HomeViewModel : ViewModelBase, IHomeViewModel, INotifyPropertyChanged
     {
-
 
         private ILog _log;
         private ILocalize _localize;
@@ -60,7 +46,7 @@ namespace RunKeeper8.Domain.ViewModels
 
         public IList<IExerciseType> ExerciseTypes
         {
-            get { return (from e in _exerciseTypes orderby e.DisplayOrder select e).ToArray(); }
+            get { return (from e in _exerciseTypes orderby e.DisplayOrder descending, e.Id select e).ToArray(); }
             set
             {
                 _exerciseTypes = value;
@@ -92,11 +78,9 @@ namespace RunKeeper8.Domain.ViewModels
                     if (foundUser == null)
                     {
                         //this is first load of the app, set it up
-                        var u = new User();
-                        _repository.Insert<User>(user).ContinueWith(task =>
+                        _repository.Insert<User>(this.User).ContinueWith(task =>
                             {
-                                u.Id = task.Result;
-                                this.User = u;
+                                this.User = this.User;
                             });
                     }
                     else
@@ -106,28 +90,46 @@ namespace RunKeeper8.Domain.ViewModels
                     Account.AccessToken = user.RunkeeperToken;
                 });
 
-            if (this.ExerciseTypes == null || this.ExerciseTypes.Count == 0 || (this.ExerciseTypes.Count == 1 && this.ExerciseTypes[0].Id == 0))
+            if (_exerciseTypes == null || _exerciseTypes.Count == 0 ||
+                (_exerciseTypes.Count == 1 && _exerciseTypes[0].Id == 0))
             {
-                _repository.Query<ExerciseType>("select * from ExerciseType").ContinueWith(t =>
-                    {
-                        var types = t.Result;
-                        if (types == null || types.Count == 0)
+                if (HomeViewModel.cachedTypes != null)
+                {
+                    this.ExerciseTypes = HomeViewModel.cachedTypes;
+                    _log.Info("cache hit");
+                }
+                else
+                {
+                    _log.Info("cache miss");
+                    this.ExerciseTypes = DefaultTypes;
+                    _log.Info("default types set, querying");
+                    _repository.Query<ExerciseType>("select * from ExerciseType").ContinueWith(t =>
                         {
-                            foreach (var e in this.DefaultTypes)
+                            _log.Info("query complete");
+                            var types = t.Result;
+                            if (types == null || types.Count == 0)
                             {
 
-                                _repository.Insert<ExerciseType>(e);
+                                _log.Info("db does not have Exercise types, loading default items");
+                                foreach (var e in from tt in this.ExerciseTypes orderby tt.Id select tt)
+                                {
+                                    _repository.Insert<ExerciseType>(e);
+                                }
                             }
-                            this.ExerciseTypes = DefaultTypes;
-                        }
-                        else
-                        {
-                            this.ExerciseTypes = (from tt in types select tt).ToArray();
-                        }
-                    });
+                            else
+                            {
+                                _log.Info("all excecise types retreived from the db, update local data store");
+                                this.ExerciseTypes = (from tt in types select tt).ToArray();
+                            }
+                            _log.Info("cache extypes to static var");
+                            HomeViewModel.cachedTypes = ExerciseTypes;
+
+                        });
+                }
             }
         }
 
+        private static IList<IExerciseType> cachedTypes = null;
 
         public string AppTitle
         {
@@ -150,16 +152,46 @@ namespace RunKeeper8.Domain.ViewModels
             }
         }
 
-        public ICommand BookmarkCommand
+
+        private ICommand _pairCommand;
+
+        public ICommand PairAgentCommand
         {
             get
             {
-                return new DelegateCommand(() =>
-                    {
-                        //navigate to the bookmark interface
-                    });
+                return _pairCommand
+                       ?? (_pairCommand = new DelegateCommand(t =>
+                           {
+                               PairDevice();
+                           }
+                                              ));
+
             }
         }
+
+        private ICommand _LoginWithRunKeeperCommand;
+
+        public ICommand LoginWithRunKeeperCommand
+        {
+            get
+            {
+                return _LoginWithRunKeeperCommand
+                       ?? (_LoginWithRunKeeperCommand = new DelegateCommand(t =>
+                           {
+                               _NavigationService.Navigate(new Uri("/UI/OAuthWebViewPage.xaml",
+                                                                   UriKind.RelativeOrAbsolute));
+                           }
+                                                            ));
+
+            }
+        }
+
+        private void PairDevice()
+        {
+            MessageBox.Show("Pair Device with AGENT");
+        }
+
+
 
         private ICommand _exerciseCommand;
 
@@ -173,10 +205,6 @@ namespace RunKeeper8.Domain.ViewModels
                                var button =
                                    ((System.Windows.Controls.Primitives.ButtonBase)
                                     (((System.Windows.RoutedEventArgs) (t)).OriginalSource));
-
-
-
-
                                _NavigationService.Navigate(new Uri("/MainPage.xaml?type=" + button.CommandParameter,
                                                                    UriKind.RelativeOrAbsolute));
                            }
@@ -196,91 +224,91 @@ namespace RunKeeper8.Domain.ViewModels
                             {
                                 Id = 1,
                                 DisplayName = "Walking",
-                                DisplayOrder = 0,
+                                DisplayOrder = 10,
                                 UIExerciseType = "Map",
-                                TypeName="Walking",
-                                Icon="/Assets/Exercises/walking.png"
+                                TypeName = "Walking",
+                                Icon = "/Assets/Exercises/walking.png"
                             },
                         new ExerciseType()
                             {
                                 Id = 2,
                                 DisplayName = "Running",
-                                DisplayOrder = 1,
+                                DisplayOrder = 9,
                                 UIExerciseType = "Map",
-                                TypeName="Running",
-                                Icon="/Assets/Exercises/walking.png"
+                                TypeName = "Running",
+                                Icon = "/Assets/Exercises/walking.png"
                             },
                         new ExerciseType()
                             {
                                 Id = 3,
                                 DisplayName = "Mountain Biking",
-                                DisplayOrder = 10,
+                                DisplayOrder = 8,
                                 UIExerciseType = "Map",
-                                TypeName="MountainBiking",
-                                Icon="/Assets/Exercises/mountainbike.png"
+                                TypeName = "MountainBiking",
+                                Icon = "/Assets/Exercises/mountainbike.png"
                             },
                         new ExerciseType()
                             {
                                 Id = 4,
                                 DisplayName = "Cycling",
-                                DisplayOrder = 10,
+                                DisplayOrder = 7,
                                 UIExerciseType = "Map",
-                                TypeName="Cycling",
-                                Icon="/Assets/Exercises/bike.png"
+                                TypeName = "Cycling",
+                                Icon = "/Assets/Exercises/bike.png"
                             },
                         new ExerciseType()
                             {
                                 Id = 5,
                                 DisplayName = "Hiking",
-                                DisplayOrder = 2,
+                                DisplayOrder = 6,
                                 UIExerciseType = "Map",
-                                TypeName="Hiking",
-                                Icon="/Assets/Exercises/hike.png"
+                                TypeName = "Hiking",
+                                Icon = "/Assets/Exercises/hike.png"
                             },
                         new ExerciseType()
                             {
                                 Id = 6,
                                 DisplayName = "Downhill Skiing",
-                                DisplayOrder = 10,
+                                DisplayOrder = 5,
                                 UIExerciseType = "Map",
-                                TypeName="DownhillSkiing",
-                                Icon="/Assets/Exercises/skiing.png"
+                                TypeName = "DownhillSkiing",
+                                Icon = "/Assets/Exercises/skiing.png"
                             },
                         new ExerciseType()
                             {
                                 Id = 7,
                                 DisplayName = "Cross Country Skiing",
-                                DisplayOrder = 10,
+                                DisplayOrder = 4,
                                 UIExerciseType = "Map",
-                                TypeName="CrossCountrySkiing",
-                                Icon="/Assets/Exercises/crosscountryskiing.png"
+                                TypeName = "CrossCountrySkiing",
+                                Icon = "/Assets/Exercises/crosscountryskiing.png"
                             },
                         new ExerciseType()
                             {
                                 Id = 8,
                                 DisplayName = "Snowboarding",
-                                DisplayOrder = 10,
+                                DisplayOrder = 3,
                                 UIExerciseType = "Map",
-                                TypeName="Snowboarding",
-                                Icon="/Assets/Exercises/snowboarding.png"
+                                TypeName = "Snowboarding",
+                                Icon = "/Assets/Exercises/snowboarding.png"
                             },
                         new ExerciseType()
                             {
                                 Id = 9,
                                 DisplayName = "Wheelchair",
-                                DisplayOrder = 10,
+                                DisplayOrder = 2,
                                 UIExerciseType = "Map",
-                                TypeName="Wheelchair",
-                                Icon="/Assets/Exercises/wheelchair.png"
+                                TypeName = "Wheelchair",
+                                Icon = "/Assets/Exercises/wheelchair.png"
                             },
                         new ExerciseType()
                             {
                                 Id = 10,
                                 DisplayName = "Other",
-                                DisplayOrder = 10,
+                                DisplayOrder = 1,
                                 UIExerciseType = "Map",
-                                TypeName="Other",
-                                Icon="/Assets/Exercises/other.png"
+                                TypeName = "Other",
+                                Icon = "/Assets/Exercises/other.png"
                             },
                     };
 

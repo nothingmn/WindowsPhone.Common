@@ -45,14 +45,18 @@ namespace RunKeeper8.Domain.ViewModels
 
         public void SetExerciseTypeId(int Id)
         {
-            
+
+            //_repository.Query<ExerciseType>("select * from ExerciseType where Id=?", Id).ContinueWith(t =>
 
             _repository.Single<ExerciseType>(Id).ContinueWith(t =>
                 {
+                    //if (t.Result != null && t.Result.Count == 1)
+                    //{
+                    //ExerciseType = t.Result[0];
                     ExerciseType = t.Result;
                     ExerciseType.DisplayOrder++;
-
-                    _repository.Update<ExerciseType>(ExerciseType);
+                    _repository.Update<ExerciseType>(ExerciseType, ExerciseType.Id);
+                    //}
                 });
         }
 
@@ -208,22 +212,6 @@ namespace RunKeeper8.Domain.ViewModels
 
         private ICommand searchCommand;
 
-        public ICommand PairCommand
-        {
-            get
-            {
-                if (searchCommand == null)
-                {
-                    searchCommand = new DelegateCommand(PairDevice);
-                }
-                return searchCommand;
-            }
-        }
-
-        private void PairDevice()
-        {
-
-        }
 
         private ICommand startCommand;
 

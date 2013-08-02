@@ -45,12 +45,9 @@ namespace RunKeeper8.Contracts.ViewModels
 
 
         //commands
-        ICommand PairCommand { get; }
         ICommand StartCommand { get; }
         ICommand ConnectCommand { get; }
         ICommand ResumeCommand { get; }
-
-        ICommand RunKeeperLoginCommand { get; }
 
 
         DateTime PublishDateTime { get; set; }

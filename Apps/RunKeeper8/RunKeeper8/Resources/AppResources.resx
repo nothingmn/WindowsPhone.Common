@@ -126,7 +126,7 @@
     <comment>Controls the Language and ensures that the font for all elements in the RootFrame aligns with the app's language. Set to the language code of this resource file's language.</comment>
   </data>
   <data name="ApplicationTitle" xml:space="preserve">
-    <value>RUNKEEPER 8</value>
+    <value>Exerciser</value>
   </data>
   <data name="AppBarButtonText" xml:space="preserve">
     <value>add</value>
@@ -211,5 +211,14 @@
   </data>
   <data name="Stop" xml:space="preserve">
     <value>Stop</value>
+  </data>
+  <data name="LoginToRunkeeper" xml:space="preserve">
+    <value>Login to Runkeeper</value>
+  </data>
+  <data name="PairWithAgent" xml:space="preserve">
+    <value>Pair with AGENT Smartwatch</value>
+  </data>
+  <data name="InitialLoadMessage" xml:space="preserve">
+    <value>Please wait while we configure your phone.</value>
   </data>
 </root>

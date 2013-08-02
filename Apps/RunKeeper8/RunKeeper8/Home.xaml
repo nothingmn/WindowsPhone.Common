@@ -20,8 +20,8 @@
         <!--Pivot Control-->
         <phone:Pivot Title="{Binding AppTitle, Mode=TwoWay}">
             <!--Pivot item one-->
-            <phone:PivotItem Header="{Binding Path=LocalizedResources.HomePage1Title, Source={StaticResource LocalizedStrings}}">
-                <ListBox ItemsSource="{Binding ExerciseTypes, Mode=TwoWay}" Margin="0,0,0,0" >
+            <phone:PivotItem  Header="{Binding Path=LocalizedResources.HomePage1Title, Source={StaticResource LocalizedStrings}}">
+                <ListBox ItemsSource="{Binding ExerciseTypes}" Margin="0,0,0,0" >
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <Button Width="460"  CommandParameter="{Binding Id}" Command="{Binding ExerciseCommand, ElementName=model}" Click="ButtonBase_OnClick">
@@ -45,7 +45,10 @@
 
             <!--Pivot item two-->
             <phone:PivotItem Header="{Binding Path=LocalizedResources.HomePage2Title, Source={StaticResource LocalizedStrings}}">
-                <TextBlock Text="{Binding User.DisplayName, Mode=TwoWay}"></TextBlock>
+                <StackPanel Orientation="Vertical">
+                    <Button Command="{Binding LoginWithRunKeeperCommand}" Content="{Binding Path=LocalizedResources.LoginToRunkeeper, Source={StaticResource LocalizedStrings}}"></Button>
+                    <Button Command="{Binding PairAgentCommand}" Content="{Binding Path=LocalizedResources.PairWithAgent, Source={StaticResource LocalizedStrings}}"></Button>
+                </StackPanel>
             </phone:PivotItem>
         </phone:Pivot>
     </Grid>

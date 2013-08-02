@@ -72,7 +72,7 @@
                     <TextBlock Text="{Binding PaceDisplay, Mode=TwoWay}" Grid.Column="3" x:Name="paceLabel"
                 HorizontalAlignment="Center" Grid.Row="1"/>
 
-                    <TextBlock Grid.ColumnSpan="2" Text="{Binding ActivityType, Mode=TwoWay}" Grid.Column="0" Grid.Row="2"/>
+                    <TextBlock Grid.ColumnSpan="2" Text="{Binding ExerciseType.DisplayName, Mode=TwoWay}" Grid.Column="0" Grid.Row="2"/>
 
                     <Button Content="{Binding Path=LocalizedResources.Start, Source={StaticResource LocalizedStrings}}"
                       Grid.Row="2" Grid.Column="2"  Grid.ColumnSpan="1"
@@ -97,14 +97,14 @@
     </Grid>
 
     <!--Sample code showing usage of ApplicationBar-->
-    <phone:PhoneApplicationPage.ApplicationBar>
+    <!--<phone:PhoneApplicationPage.ApplicationBar>
         <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True">
             <shell:ApplicationBar.MenuItems>
                 <shell:ApplicationBarMenuItem Text="Login with RunKeeper" Click="RunKeeperLoginMenuItem_Click" />
                 <shell:ApplicationBarMenuItem Text="Pair" Click="PairMenuItem_Click" />
             </shell:ApplicationBar.MenuItems>
         </shell:ApplicationBar>
-    </phone:PhoneApplicationPage.ApplicationBar>
+    </phone:PhoneApplicationPage.ApplicationBar>-->
 
 
 </phone:PhoneApplicationPage>

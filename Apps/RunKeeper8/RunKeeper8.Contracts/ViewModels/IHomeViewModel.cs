@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 using Microsoft.Phone.Maps.Controls;
@@ -19,9 +20,10 @@ namespace RunKeeper8.Contracts.ViewModels
         IHistory History { get; set; }
         IUser User { get; set; }
         IList<IExerciseType> ExerciseTypes { get; set; }
-        ICommand BookmarkCommand { get; }
         ICommand ExerciseCommand { get; }
-        
+        ICommand PairAgentCommand { get; }
+        ICommand LoginWithRunKeeperCommand { get; }
+
         
     }
 }

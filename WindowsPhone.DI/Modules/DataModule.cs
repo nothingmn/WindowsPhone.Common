@@ -1,9 +1,9 @@
 ﻿using Ninject.Modules;
 using Windows.Storage;
+using WindowsPhone.Common.Membership;
 using WindowsPhone.Contracts.Membership;
 using WindowsPhone.Contracts.Repository;
 using WindowsPhone.Data;
-using WindowsPhone.Data.DTO;
 
 namespace WindowsPhone.DI.Modules
 {

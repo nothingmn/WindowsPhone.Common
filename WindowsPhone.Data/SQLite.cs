@@ -1173,7 +1173,6 @@ namespace SQLite
 				select "\"" + c.Name + "\" = ? ").ToArray ()), pk.Name);
 			return Execute (q, ps.ToArray ());
 		}
-
 		/// <summary>
 		/// Updates all specified objects.
 		/// </summary>
@@ -1454,7 +1453,12 @@ namespace SQLite
 				}
 			}
 			Columns = cols.ToArray ();
-			foreach (var c in Columns) {
+		    //Column pkByConvention = null;
+			foreach (var c in Columns)
+			{
+
+			  //  if (c.Name.ToLower() == "id") pkByConvention = c;
+
 				if (c.IsAutoInc && c.IsPK) {
 					_autoPk = c;
 				}
@@ -1462,7 +1466,13 @@ namespace SQLite
 					PK = c;
 				}
 			}
-			
+            //if (PK == null || pkByConvention != null)
+            //{
+            //    _autoPk = pkByConvention;
+            //    PK = pkByConvention;
+            //    PK.IsPK = true;
+            //}
+
 			HasAutoIncPK = _autoPk != null;
 
 			if (PK != null) {
@@ -1674,7 +1684,7 @@ namespace SQLite
 		{
 			var attrs = p.GetCustomAttributes (typeof(PrimaryKeyAttribute), true);
 #if !NETFX_CORE
-			return attrs.Length > 0;
+			return (attrs.Length > 0 || p.Name.ToLower() == "id");
 #else
 			return attrs.Count() > 0;
 #endif
@@ -1699,7 +1709,7 @@ namespace SQLite
 		{
 			var attrs = p.GetCustomAttributes (typeof(AutoIncrementAttribute), true);
 #if !NETFX_CORE
-			return attrs.Length > 0;
+		    return (attrs.Length > 0 || p.Name.ToLower() == "id");
 #else
 			return attrs.Count() > 0;
 #endif

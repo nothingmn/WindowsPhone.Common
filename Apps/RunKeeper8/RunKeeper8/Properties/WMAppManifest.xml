@@ -5,11 +5,10 @@
     <Language code="es-US" />
     <Language code="es-MX" />
   </Languages>
-  <App xmlns="" ProductID="{aa50fc1a-15e6-47fe-8f8a-b3dad3db2a47}" Title="RunKeeper8" RuntimeType="Silverlight" Version="1.0.0.0" Genre="apps.normal" Author="RunKeeper8 author" Description="Sample description" Publisher="RunKeeper8" PublisherID="{bb26d989-e0ab-4738-ac64-0c2a3faff130}">
+  <App xmlns="" ProductID="{aa50fc1a-15e6-47fe-8f8a-b3dad3db2a47}" Title="Exerciser" RuntimeType="Silverlight" Version="1.0.0.0" Genre="apps.normal" Author="Rob Chartier" Description="The most complete exercise app with support for devices like AGENT, Pebble, and hosting services like RunKeeper." Publisher="Rob Chartier" PublisherID="{bb26d989-e0ab-4738-ac64-0c2a3faff130}">
     <IconPath IsRelative="true" IsResource="false">Assets\ApplicationIcon.png</IconPath>
     <Capabilities>
       <Capability Name="ID_CAP_NETWORKING" />
-      <Capability Name="ID_CAP_MEDIALIB_AUDIO" />
       <Capability Name="ID_CAP_MEDIALIB_PLAYBACK" />
       <Capability Name="ID_CAP_SENSORS" />
       <Capability Name="ID_CAP_WEBBROWSERCOMPONENT" />
@@ -27,7 +26,7 @@
           <SmallImageURI IsRelative="true" IsResource="false">Assets\Tiles\IconicTileMediumLarge.png</SmallImageURI>
           <Count>0</Count>
           <IconImageURI IsRelative="true" IsResource="false">Assets\Tiles\IconicTileSmall.png</IconImageURI>
-          <Title>RunKeeper 8 - Status</Title>
+          <Title>Exerciser - Status</Title>
           <Message>
           </Message>
           <BackgroundColor>
@@ -45,9 +44,9 @@
       </PrimaryToken>
     </Tokens>
     <ScreenResolutions>
-      <ScreenResolution Name="ID_RESOLUTION_WVGA" />
-      <ScreenResolution Name="ID_RESOLUTION_WXGA" />
       <ScreenResolution Name="ID_RESOLUTION_HD720P" />
+      <ScreenResolution Name="ID_RESOLUTION_WXGA" />
+      <ScreenResolution Name="ID_RESOLUTION_WVGA" />
     </ScreenResolutions>
   </App>
 </Deployment>
