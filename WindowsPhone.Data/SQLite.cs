@@ -1617,7 +1617,15 @@ namespace SQLite
 
 			public void SetValue (object obj, object val)
 			{
-				_prop.SetValue (obj, val, null);
+			    if (_prop.PropertyType == typeof (TimeSpan))
+			    {
+                    TimeSpan ts = new TimeSpan((long)val);
+                    _prop.SetValue(obj, ts, null);
+			    }
+			    else
+			    {
+			        _prop.SetValue(obj, val, null);
+			    }
 			}
 
 			public object GetValue (object obj)
@@ -1673,8 +1681,12 @@ namespace SQLite
 				return "integer";
 			} else if (clrType == typeof(byte[])) {
 				return "blob";
-            } else if (clrType == typeof(Guid)) {
+            } else if (clrType == typeof (Guid))
+            {
                 return "varchar(36)";
+            } else if (clrType == typeof(TimeSpan))
+            {
+                return "bigint";
             } else {
 				throw new NotSupportedException ("Don't know about " + clrType);
 			}
@@ -1942,9 +1954,17 @@ namespace SQLite
 					SQLite3.BindInt (stmt, index, Convert.ToInt32 (value));
                 } else if (value is byte[]){
                     SQLite3.BindBlob(stmt, index, (byte[]) value, ((byte[]) value).Length, NegativePointer);
-                } else if (value is Guid) {
+                }
+                else if (value is Guid)
+                {
                     SQLite3.BindText(stmt, index, ((Guid)value).ToString(), 72, NegativePointer);
-                } else {
+                }
+                else if (value is TimeSpan)
+                {
+                    SQLite3.BindInt64(stmt, index, ((TimeSpan)value).Ticks);
+                }
+                else
+                {
                     throw new NotSupportedException("Cannot store type: " + value.GetType());
                 }
 			}
@@ -1988,9 +2008,17 @@ namespace SQLite
 				} else if (clrType.GetTypeInfo().IsEnum) {
 #endif
 					return SQLite3.ColumnInt (stmt, index);
-				} else if (clrType == typeof(Int64)) {
-					return SQLite3.ColumnInt64 (stmt, index);
-				} else if (clrType == typeof(UInt32)) {
+                }
+                else if (clrType == typeof(Int64))
+                {
+                    return SQLite3.ColumnInt64(stmt, index);
+                }
+                else if (clrType == typeof(TimeSpan))
+                {
+                    return SQLite3.ColumnInt64(stmt, index);
+                }
+                else if (clrType == typeof(UInt32))
+                {
 					return (uint)SQLite3.ColumnInt64 (stmt, index);
 				} else if (clrType == typeof(decimal)) {
 					return (decimal)SQLite3.ColumnDouble (stmt, index);
