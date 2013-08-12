@@ -88,6 +88,15 @@ namespace Exercisr.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Automatically Post to RunKeeper.
+        /// </summary>
+        public static string AutoPostToRunKeeper {
+            get {
+                return ResourceManager.GetString("AutoPostToRunKeeper", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Calories.
         /// </summary>
         public static string Calories {
@@ -201,6 +210,15 @@ namespace Exercisr.Resources {
         public static string InitialLoadMessage {
             get {
                 return ResourceManager.GetString("InitialLoadMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Metric (Kilometers).
+        /// </summary>
+        public static string IsMetric {
+            get {
+                return ResourceManager.GetString("IsMetric", resourceCulture);
             }
         }
         

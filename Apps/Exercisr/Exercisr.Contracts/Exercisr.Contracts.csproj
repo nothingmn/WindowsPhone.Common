@@ -83,6 +83,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Configuration\ISettings.cs" />
     <Compile Include="Exercise\IExerciseType.cs" />
     <Compile Include="Geo\ICoordinate.cs" />
     <Compile Include="Exercise\IHistoryItem.cs" />

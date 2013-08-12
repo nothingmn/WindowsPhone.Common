@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
+using Exercisr.Contracts.Configuration;
 using Microsoft.Phone.Maps.Controls;
 using System.Device.Location;
 using Exercisr.Contracts.Exercise;
@@ -23,6 +24,10 @@ namespace Exercisr.Contracts.ViewModels
         ICommand ExerciseCommand { get; }
         ICommand PairAgentCommand { get; }
         ICommand LoginWithRunKeeperCommand { get; }
+
+        ISettings Settings { get; set; }
+        ICommand MetricToggleCommand { get; }
+        ICommand AutoPostToRunKeeperCommand { get; }
 
         
     }

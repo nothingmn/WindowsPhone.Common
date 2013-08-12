@@ -47,7 +47,11 @@
             <phone:PivotItem Header="{Binding Path=LocalizedResources.HomePage2Title, Source={StaticResource LocalizedStrings}}">
                 <StackPanel Orientation="Vertical">
                     <Button Command="{Binding LoginWithRunKeeperCommand}" Content="{Binding Path=LocalizedResources.LoginToRunkeeper, Source={StaticResource LocalizedStrings}}"></Button>
+
+                    <CheckBox IsChecked="{Binding Settings.AutoPostToRunKeeper, Mode=TwoWay}" Command="{Binding AutoPostToRunKeeperCommand}" Content="{Binding Path=LocalizedResources.AutoPostToRunKeeper, Source={StaticResource LocalizedStrings}}" />
+                    
                     <Button Command="{Binding PairAgentCommand}" Content="{Binding Path=LocalizedResources.PairWithAgent, Source={StaticResource LocalizedStrings}}"></Button>
+                    <CheckBox IsChecked="{Binding Settings.IsMetric, Mode=TwoWay}" Command="{Binding MetricToggleCommand}" Content="{Binding Path=LocalizedResources.IsMetric, Source={StaticResource LocalizedStrings}}"></CheckBox>
                 </StackPanel>
             </phone:PivotItem>
             <phone:PivotItem Header="{Binding Path=LocalizedResources.HomePage3Title, Source={StaticResource LocalizedStrings}}">

@@ -1,4 +1,6 @@
 ﻿using System.Device.Location;
+using Exercisr.Contracts.Configuration;
+using Exercisr.Domain.Configuration;
 using Exercisr.Domain.Exercise;
 using Exercisr.Domain.Geo;
 using Exercisr.Domain.RunKeeper;
@@ -36,6 +38,7 @@ namespace Exercisr.DI.Modules
                 Bind<IHistoryItem>().To<HistoryItem>();
                 Bind<IExerciseType>().To<ExerciseType>();
 
+                Bind<ISettings>().To<Settings>();
 
             }
         }

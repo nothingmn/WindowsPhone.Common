@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
+using Exercisr.Contracts.Configuration;
 using Exercisr.Contracts.Exercise;
 using Exercisr.Contracts.Services;
 using Exercisr.Contracts.ViewModels;
@@ -57,11 +58,22 @@ namespace Exercisr.Domain.ViewModels
         }
 
         private readonly IRepository _repository;
+        private ISettings _settings;
 
+        public ISettings Settings
+        {
+            get { return _settings; }
+            set
+            {
+                _log.Info("Setter on Settings called");
+                _settings = value;
+                Dispatcher("Settings");
+            }
+        }
 
         public HomeViewModel(ILog log, IAccount account, ILocalize localize, IApplication application, IHistory history,
                              INavigationService navigationService, IUser user, IRepository repository,
-                             IList<IExerciseType> exerciseTypes)
+                             IList<IExerciseType> exerciseTypes, ISettings settings)
         {
             _log = log;
             _localize = localize;
@@ -74,7 +86,9 @@ namespace Exercisr.Domain.ViewModels
             User = user;
             ExerciseTypes = exerciseTypes;
             _repository = repository;
-
+            _settings = settings;
+            _settings.OnSettingsChanged += _settings_OnSettingsChanged;
+            _settings.Load();
             _history.Load();
 
             _repository.Single<User>(1).ContinueWith(t =>
@@ -134,6 +148,11 @@ namespace Exercisr.Domain.ViewModels
             }
         }
 
+        void _settings_OnSettingsChanged(ISettings settings, string propertyName)
+        {
+            Dispatcher("Settings");
+        }
+
         void _history_OnHistoryItemsChanged(IHistory history, IList<IHistoryItem> changedItems)
         {
             Dispatcher("History");
@@ -162,9 +181,36 @@ namespace Exercisr.Domain.ViewModels
             }
         }
 
+        ICommand _MetricToggleCommand;
+        public ICommand MetricToggleCommand
+        {
+            get
+            {
+                return _MetricToggleCommand
+                       ?? (_MetricToggleCommand = new DelegateCommand(t =>
+                           {
+                               _settings.Save();
+                           }));
+
+            }
+        }
+
+        ICommand _AutoPostToRunKeeperCommand;
+        public ICommand AutoPostToRunKeeperCommand
+        {
+            get
+            {
+                return _AutoPostToRunKeeperCommand
+                       ?? (_AutoPostToRunKeeperCommand = new DelegateCommand(t =>
+                           {
+                               _settings.Save();
+                           }));
+            }
+        }
+
+
 
         private ICommand _pairCommand;
-
         public ICommand PairAgentCommand
         {
             get
