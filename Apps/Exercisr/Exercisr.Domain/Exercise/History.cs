@@ -73,38 +73,39 @@ namespace Exercisr.Domain.Exercise
         public void Load()
         {
             _repository.Query<HistoryDBItem>("select * from HistoryDBItem").ContinueWith(t =>
-            {
-                IList<HistoryItem> items = new List<HistoryItem>();
-
-                foreach (var r in t.Result)
                 {
-                    var newItem = new HistoryItem()
-                        {
-                            Calories = r.Calories,
-                            DisplayName = r.DisplayName,
-                            Distance = r.Distance,
-                            ExerciseType = r.ExerciseType,
-                            Coordinates = new List<ICoordinate>(),
-                            EndTimestamp = r.EndTimestamp,
-                            Id = r.Id,
-                            Pace = r.Pace,
-                            PublishDateTime = r.PublishDateTime,
-                            PublishSuccess = r.PublishSuccess,
-                            StartTimestamp = r.StartTimestamp
-                        };
+                    IList<HistoryItem> items = new List<HistoryItem>();
 
-                    _repository.Query<Coordinate>("select * from Coordinate where HistoryItemId=?",
-                                                         newItem.Id).ContinueWith(hctask =>
-                                                             {
-                                                                 newItem.Coordinates = (from c in hctask.Result select c).ToArray();
-                                                             }).Wait();
-                    items.Add(newItem);
+                    foreach (var r in t.Result)
+                    {
+                        var newItem = new HistoryItem()
+                            {
+                                Calories = r.Calories,
+                                DisplayName = r.DisplayName,
+                                Distance = r.Distance,
+                                ExerciseType = r.ExerciseType,
+                                Coordinates = new List<ICoordinate>(),
+                                EndTimestamp = r.EndTimestamp,
+                                Id = r.Id,
+                                Pace = r.Pace,
+                                PublishDateTime = r.PublishDateTime,
+                                PublishSuccess = r.PublishSuccess,
+                                StartTimestamp = r.StartTimestamp
+                            };
 
-                }
-                this.HistoryItems = new List<IHistoryItem>(from i in items select i);//.ToArray();
-                if (OnHistoryItemsChanged != null) OnHistoryItemsChanged(this, this.HistoryItems);
+                        _repository.Query<Coordinate>("select * from Coordinate where HistoryItemId=?",
+                                                      newItem.Id).ContinueWith(hctask =>
+                                                          {
+                                                              newItem.Coordinates =
+                                                                  (from c in hctask.Result select c).ToArray();
+                                                          }).Wait();
+                        items.Add(newItem);
 
-            }).Wait();
+                    }
+                    this.HistoryItems = new List<IHistoryItem>(from i in items select i); //.ToArray();
+                    if (OnHistoryItemsChanged != null) OnHistoryItemsChanged(this, this.HistoryItems);
+
+                });
         }
 
         private class HistoryDBItem
