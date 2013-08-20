@@ -53,11 +53,6 @@ namespace Exercisr.Contracts.ViewModels
         ICommand ResumeCommand { get; }
 
 
-        DateTime PublishDateTime { get; set; }
-        bool PublishSuccess { get; set; }
-        string PublishBody { get; set; }
-
-
         Visibility StopVisibility { get; set; }
         Visibility StartVisibility { get; set; }
         Visibility ResumeVisibility { get; set; }

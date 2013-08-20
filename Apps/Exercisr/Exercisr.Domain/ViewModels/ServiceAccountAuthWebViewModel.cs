@@ -6,18 +6,21 @@ using System.Threading.Tasks;
 using Exercisr.Contracts.Services;
 using Exercisr.Contracts.ViewModels;
 using Exercisr.Domain.RunKeeper.v1;
+using WindowsPhone.Common.Membership;
 using WindowsPhone.Common.ViewModels;
 using WindowsPhone.Contracts.Communication.Http;
+using WindowsPhone.Contracts.Repository;
 
 namespace Exercisr.Domain.ViewModels
 {
     public class ServiceAccountAuthWebViewModel : ViewModelBase, IOAuthViewModel 
     {
+        private readonly IRepository _repository;
 
-        public ServiceAccountAuthWebViewModel(IAccount account)
+        public ServiceAccountAuthWebViewModel(IAccount account, IRepository repository)
         {
+            _repository = repository;
             ServiceAccount = account;
-
         }
 
         private IAccount _serviceAccount;
@@ -49,6 +52,13 @@ namespace Exercisr.Domain.ViewModels
         public void UpdateAccessToken(string token)
         {
             _serviceAccount.AccessToken = token;
+
+            _repository.Single<User>(1).ContinueWith(t =>
+            {
+                var foundUser = t.Result;
+                foundUser.RunkeeperToken = token;
+                _repository.Update<User>(foundUser, foundUser.Id);
+            });
 
             Dispatcher("ServiceAccount");
         }

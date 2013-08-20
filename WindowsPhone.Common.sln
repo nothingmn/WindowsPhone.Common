@@ -332,7 +332,6 @@ Global
 		{ECD7059D-7EBC-49D3-BEA9-C38067772E19}.Debug|x86.Build.0 = Debug|x86
 		{ECD7059D-7EBC-49D3-BEA9-C38067772E19}.Release|Any CPU.ActiveCfg = Release|x86
 		{ECD7059D-7EBC-49D3-BEA9-C38067772E19}.Release|ARM.ActiveCfg = Release|ARM
-		{ECD7059D-7EBC-49D3-BEA9-C38067772E19}.Release|ARM.Build.0 = Release|ARM
 		{ECD7059D-7EBC-49D3-BEA9-C38067772E19}.Release|Mixed Platforms.ActiveCfg = Release|x86
 		{ECD7059D-7EBC-49D3-BEA9-C38067772E19}.Release|Mixed Platforms.Build.0 = Release|x86
 		{ECD7059D-7EBC-49D3-BEA9-C38067772E19}.Release|Mixed Platforms.Deploy.0 = Release|x86

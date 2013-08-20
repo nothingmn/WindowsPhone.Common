@@ -11,6 +11,7 @@ using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using Ninject.Parameters;
 using WindowsPhone.Contracts.Core;
+using WindowsPhone.Contracts.DI;
 
 namespace WindowsPhone.DI
 {

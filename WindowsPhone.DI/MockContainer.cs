@@ -5,6 +5,7 @@ using System.Text;
 using Ninject;
 using Ninject.Parameters;
 using WindowsPhone.Contracts.Core;
+using WindowsPhone.Contracts.DI;
 
 namespace WindowsPhone.DI
 {

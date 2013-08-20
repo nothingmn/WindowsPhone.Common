@@ -1,6 +1,7 @@
 ﻿
 using Ninject;
 using WindowsPhone.Contracts.Core;
+using WindowsPhone.Contracts.DI;
 
 namespace WindowsPhone.DI
 {

@@ -79,15 +79,6 @@ namespace Exercisr.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Exerciser.
-        /// </summary>
-        public static string ApplicationTitle {
-            get {
-                return ResourceManager.GetString("ApplicationTitle", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Automatically Post to RunKeeper.
         /// </summary>
         public static string AutoPostToRunKeeper {
@@ -273,6 +264,15 @@ namespace Exercisr.Resources {
         public static string Pause {
             get {
                 return ResourceManager.GetString("Pause", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Post to RunKeeper.
+        /// </summary>
+        public static string PostToRunKeeper {
+            get {
+                return ResourceManager.GetString("PostToRunKeeper", resourceCulture);
             }
         }
         

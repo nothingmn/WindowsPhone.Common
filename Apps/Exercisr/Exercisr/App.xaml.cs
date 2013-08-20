@@ -4,6 +4,7 @@ using System.Resources;
 using System.Windows;
 using System.Windows.Markup;
 using System.Windows.Navigation;
+using Exercisr.Contracts.Configuration;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using Exercisr.Resources;
@@ -20,6 +21,23 @@ namespace Exercisr
         /// </summary>
         /// <returns>The root frame of the Phone Application.</returns>
         public static PhoneApplicationFrame RootFrame { get; private set; }
+
+        private static ISettings _Settings = null;
+
+        public static ISettings Settings
+        {
+            get
+            {
+                if (_Settings == null) _Settings = _Settings = DI.Container.Current.Get<ISettings>();
+                return _Settings;
+            }
+        }
+
+        private static IApplication _application;
+        public static IApplication ExercisrApplication
+        {
+            get { return _application; }
+        }
 
         /// <summary>
         /// Constructor for the Application object.
@@ -39,8 +57,10 @@ namespace Exercisr
             InitializeLanguage();
 
 
-            IApplication application = DI.Container.Current.Get<IApplication>();
-            application.Name = "Exerciser";
+            _application = DI.Container.Current.Get<IApplication>();
+            _application.Name = "Exercisr";
+
+            
 
 
             // Show graphics profiling information while debugging.

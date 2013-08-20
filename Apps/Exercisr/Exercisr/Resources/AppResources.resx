@@ -125,9 +125,6 @@
     <value>en-US</value>
     <comment>Controls the Language and ensures that the font for all elements in the RootFrame aligns with the app's language. Set to the language code of this resource file's language.</comment>
   </data>
-  <data name="ApplicationTitle" xml:space="preserve">
-    <value>Exerciser</value>
-  </data>
   <data name="AppBarButtonText" xml:space="preserve">
     <value>add</value>
   </data>
@@ -229,5 +226,8 @@
   </data>
   <data name="IsMetric" xml:space="preserve">
     <value>Metric (Kilometers)</value>
+  </data>
+  <data name="PostToRunKeeper" xml:space="preserve">
+    <value>Post to RunKeeper</value>
   </data>
 </root>

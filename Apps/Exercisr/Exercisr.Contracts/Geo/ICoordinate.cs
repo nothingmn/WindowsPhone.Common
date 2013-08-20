@@ -2,6 +2,7 @@
 {
     public interface ICoordinate
     {
+        int Id { get; set; }
         int HistoryItemId { get; set; }
         double Latitude { get; set; }
         double Longitude { get; set; }

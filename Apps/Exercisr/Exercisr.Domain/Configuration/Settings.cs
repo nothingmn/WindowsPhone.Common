@@ -12,11 +12,7 @@ namespace Exercisr.Domain.Configuration
     public class Settings : ISettings
     {
 
-
-        public Settings()
-        {
-        }
-
+        
         public event SettingsChanged OnSettingsChanged;
         private readonly IRepository _repository;
         private readonly ILog _log;
@@ -25,6 +21,9 @@ namespace Exercisr.Domain.Configuration
         {
             _repository = repository;
             _log = log;
+        }
+        public Settings()
+        {
         }
 
         private int _id;

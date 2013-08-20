@@ -8,7 +8,9 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     xmlns:util="clr-namespace:Exercisr.Utils"
-    
+    xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
+    xmlns:system="clr-namespace:System;assembly=mscorlib"
+
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
@@ -55,13 +57,14 @@
                 </StackPanel>
             </phone:PivotItem>
             <phone:PivotItem Header="{Binding Path=LocalizedResources.HomePage3Title, Source={StaticResource LocalizedStrings}}">
-                <ListBox ItemsSource="{Binding History.HistoryItems}" Margin="0,0,0,0" >
+                <ListBox ItemsSource="{Binding History.HistoryItems, Mode=TwoWay}" Margin="0,0,0,0"> 
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <Grid>
                                 <Grid.RowDefinitions>
                                     <RowDefinition></RowDefinition>
                                     <RowDefinition></RowDefinition>
+                                    <RowDefinition Height="15"></RowDefinition>
                                 </Grid.RowDefinitions>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition></ColumnDefinition>
@@ -71,9 +74,14 @@
                                 </Grid.ColumnDefinitions>
                                 <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="4"  Text="{Binding DisplayName, Mode=TwoWay}" FontSize="32"></TextBlock>
                                 <TextBlock Grid.Row="1" Grid.Column="0" Text="{Binding Path=LocalizedResources.Distance, Source={StaticResource LocalizedStrings}}" FontSize="24"></TextBlock>
-                                <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding Distance, Mode=TwoWay, StringFormat=F1}" FontSize="24"></TextBlock>
+                                <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding DistanceDisplay, Mode=TwoWay}" FontSize="24"></TextBlock>
                                 <TextBlock Grid.Row="1" Grid.Column="2" Text="{Binding Path=LocalizedResources.Calories, Source={StaticResource LocalizedStrings}}" FontSize="24"></TextBlock>
                                 <TextBlock Grid.Row="1" Grid.Column="3" Text="{Binding Calories, Mode=TwoWay, StringFormat=F0}" FontSize="24"></TextBlock>
+                                <toolkit:ContextMenuService.ContextMenu>
+                                    <toolkit:ContextMenu >
+                                        <toolkit:MenuItem CommandParameter="{Binding Id}" Click="MenuItemPostToRunKeeperCommand_OnClick" Header="{Binding Path=LocalizedResources.PostToRunKeeper, Source={StaticResource LocalizedStrings}}"/>
+                                    </toolkit:ContextMenu>
+                                </toolkit:ContextMenuService.ContextMenu>
                             </Grid>
                         </DataTemplate>
                     </ListBox.ItemTemplate>

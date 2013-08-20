@@ -5,6 +5,7 @@ using WindowsPhone.Common.Localization;
 using WindowsPhone.Common.Membership;
 using WindowsPhone.Contracts;
 using WindowsPhone.Contracts.Core;
+using WindowsPhone.Contracts.DI;
 using WindowsPhone.Contracts.Localization;
 using WindowsPhone.Contracts.Membership;
 using WindowsPhone.Contracts.Navigation;
@@ -26,8 +27,13 @@ namespace WindowsPhone.DI.Modules
                 Bind<IApplication>().To<Application>().InSingletonScope();
 
                 Bind<INavigationService>().To<WindowsPhone.Common.Navigation.NavigationService>().InSingletonScope();
-                Bind<IUser>().To<User>().BindingConfiguration.IsImplicit = true;
+                Bind<IUser>().To<User>().InSingletonScope().BindingConfiguration.IsImplicit = true;
 
+                Bind<IDIContainer>().ToMethod(context =>
+                {
+                    return DI.Container.Current;
+
+                }).InSingletonScope();
 
             }
         }

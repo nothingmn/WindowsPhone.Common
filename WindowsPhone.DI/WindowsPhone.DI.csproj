@@ -84,7 +84,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Container.cs" />
-    <Compile Include="IDIContainer.cs" />
     <Compile Include="MockContainer.cs" />
     <Compile Include="Modules\CommonModule.cs" />
     <Compile Include="Modules\CommunicationModule.cs" />

@@ -15,11 +15,13 @@ using Exercisr.Resources;
 using WindowsPhone.Common.ViewModels;
 using WindowsPhone.Contracts;
 using WindowsPhone.Contracts.Communication;
+using WindowsPhone.Contracts.Logging;
 
 namespace Exercisr
 {
     public partial class MainPage : PhoneApplicationPage
     {
+        private ILog _log = null;
         private ITrackingViewModel dataContext;
         // Constructor
         public MainPage()
@@ -43,9 +45,9 @@ namespace Exercisr
             line.StrokeColor = dataContext.StrokeColor;
             line.StrokeThickness = dataContext.StrokeThickness;
             Map.MapElements.Add(line);
-            
-            Loaded += MainPage_Loaded;
 
+            Loaded += MainPage_Loaded;
+            _log = DI.Container.Current.Get<ILog>();
         }
 
         private void MainPage_Loaded(object sender, RoutedEventArgs e)
@@ -61,25 +63,26 @@ namespace Exercisr
             dataContext.SetExerciseTypeId(id);
         }
 
-        void MainPage_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        private void MainPage_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
+            //_log.InfoFormat("Main Page Property Changed:{0}", e.PropertyName);
             if (e.PropertyName == "StrokeThickness") line.StrokeThickness = dataContext.StrokeThickness;
             if (e.PropertyName == "StrokeColor") line.StrokeColor = dataContext.StrokeColor;
 
-            if (e.PropertyName == "PublishSuccess")
+            if (e.PropertyName == "StartVisibility")
             {
-                Dispatcher.BeginInvoke(() =>
-                    {
-                        var msg = "Successfully published to RunKeeper!";
-                        if (!dataContext.PublishSuccess) msg = "Failed to publish to Runkeeper!";
-
-                        MessageBox.Show(msg);
-                    });
+                if ((this.dataContext as ITrackingViewModel).StartVisibility == Visibility.Collapsed)
+                {
+                    line.Path.Clear();
+                }
             }
 
         }
-        MapPolyline line = new MapPolyline();
-        void Coordinates_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+
+        private MapPolyline line = new MapPolyline();
+
+        private void Coordinates_CollectionChanged(object sender,
+                                                   System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
             if (e.NewItems != null)
             {

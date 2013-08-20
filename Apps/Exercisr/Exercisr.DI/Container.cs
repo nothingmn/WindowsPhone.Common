@@ -13,6 +13,7 @@ using Ninject;
 using Ninject.Parameters;
 using Exercisr.DI.Modules;
 using WindowsPhone.Contracts.Core;
+using WindowsPhone.Contracts.DI;
 using WindowsPhone.DI;
 
 namespace Exercisr.DI

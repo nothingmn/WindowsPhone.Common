@@ -38,7 +38,7 @@ namespace Exercisr.DI.Modules
                 Bind<IHistoryItem>().To<HistoryItem>();
                 Bind<IExerciseType>().To<ExerciseType>();
 
-                Bind<ISettings>().To<Settings>();
+                Bind<ISettings>().To<Settings>().InSingletonScope();
 
             }
         }

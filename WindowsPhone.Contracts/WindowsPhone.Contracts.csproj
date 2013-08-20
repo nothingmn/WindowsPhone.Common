@@ -92,6 +92,7 @@
     <Compile Include="Communication\ICredential.cs" />
     <Compile Include="Core\IInjectionParameter.cs" />
     <Compile Include="Core\IVersion.cs" />
+    <Compile Include="DI\IDIContainer.cs" />
     <Compile Include="IApplication.cs" />
     <Compile Include="Localization\ILocalize.cs" />
     <Compile Include="Logging\ILog.cs" />

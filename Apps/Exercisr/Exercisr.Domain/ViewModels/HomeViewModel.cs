@@ -100,13 +100,15 @@ namespace Exercisr.Domain.ViewModels
                         _repository.Insert<User>(this.User).ContinueWith(task =>
                             {
                                 this.User = this.User;
+                                Account.AccessToken = this.User.RunkeeperToken;
+
                             });
                     }
                     else
                     {
                         User = foundUser;
+                        Account.AccessToken = foundUser.RunkeeperToken;
                     }
-                    Account.AccessToken = user.RunkeeperToken;
                 });
 
             if (_exerciseTypes == null || _exerciseTypes.Count == 0 ||
@@ -208,7 +210,29 @@ namespace Exercisr.Domain.ViewModels
             }
         }
 
+        ICommand _PostToRunKeeperCommand;
+        public ICommand PostToRunKeeperCommand
+        {
+            get
+            {
+                return _PostToRunKeeperCommand
+                       ?? (_PostToRunKeeperCommand = new DelegateCommand(t =>
+                           {
+                               int commandID = (int) t;
+                               var historyItem =
+                                   (from hi in _history.HistoryItems where hi.Id == commandID select hi).FirstOrDefault();
 
+                               if (historyItem != null)
+                               {
+                                   historyItem.PublishToRunKeeper();
+                               }
+
+
+                           }));
+            }
+        }
+
+        
 
         private ICommand _pairCommand;
         public ICommand PairAgentCommand

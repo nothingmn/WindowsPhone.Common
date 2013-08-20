@@ -1,27 +1,43 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Device.Location;
 using System.Linq;
+using System.Windows;
 using Exercisr.Contracts.Exercise;
 using Exercisr.Contracts.Geo;
 using Exercisr.Domain.Geo;
 using Microsoft.Phone.Maps.Controls;
+using WindowsPhone.Common.ViewModels;
+using WindowsPhone.Contracts.DI;
 using WindowsPhone.Contracts.Repository;
 using WindowsPhone.Contracts.Serialization;
 
 namespace Exercisr.Domain.Exercise
 {
-    public class History : IHistory
+    public class History : ViewModelBase, IHistory, INotifyPropertyChanged
     {
 
         public event HistoryItemsChanged OnHistoryItemsChanged;
 
         private readonly IRepository _repository;
-        public IList<IHistoryItem> HistoryItems { get; set; }
+        private readonly IDIContainer _container;
+        private IList<IHistoryItem> _historyItems = new List<IHistoryItem>();
 
-        public History(IRepository repository)
+        public IList<IHistoryItem> HistoryItems
+        {
+            get { return _historyItems; }
+            set
+            {
+                _historyItems = value;
+                OnPropertyChanged("HistoryItems");
+            }
+        }
+
+        public History(IRepository repository, IDIContainer container)
         {
             _repository = repository;
+            _container = container;
         }
 
 
@@ -30,68 +46,38 @@ namespace Exercisr.Domain.Exercise
             IList<IHistoryItem> changedItems = new List<IHistoryItem>();
             foreach (var historyItem in HistoryItems)
             {
-                if (historyItem.Id <= 0)
+                if (historyItem.Save())
                 {
                     changedItems.Add(historyItem);
-                    HistoryDBItem db = new HistoryDBItem()
-                        {
-                            DisplayName = historyItem.DisplayName,
-                            StartTimestamp = historyItem.StartTimestamp,
-                            EndTimestamp = historyItem.EndTimestamp,
-                            ExerciseType = historyItem.ExerciseType,
-                            Id = historyItem.Id,
-                            Distance = historyItem.Distance,
-                            Calories = historyItem.Calories,
-                            Pace = historyItem.Pace,
-                            PublishDateTime = historyItem.PublishDateTime,
-                            PublishSuccess = historyItem.PublishSuccess
-                        };
-
-                    _repository.Insert<HistoryDBItem>(db).ContinueWith(t =>
-                        {
-                            foreach (var c in historyItem.Coordinates)
-                            {
-                                var cc = new Coordinate();
-                                cc.Altitude = c.Altitude;
-                                cc.Course = c.Course;
-                                cc.HorizontalAccuracy = c.HorizontalAccuracy;
-                                cc.HistoryItemId = t.Result;
-                                cc.Latitude = c.Latitude;
-                                cc.Longitude = c.Longitude;
-                                cc.Speed = c.Speed;
-                                cc.VerticalAccuracy = c.VerticalAccuracy;
-                                _repository.Insert<Coordinate>(cc).Wait();
-                                var x = cc;
-                            }
-                        }).Wait();
-                    if (OnHistoryItemsChanged != null) OnHistoryItemsChanged(this, changedItems);
                 }
             }
-            
+            if (OnHistoryItemsChanged != null) OnHistoryItemsChanged(this, changedItems);
         }
+
+
 
         public void Load()
         {
             _repository.Query<HistoryDBItem>("select * from HistoryDBItem").ContinueWith(t =>
                 {
-                    IList<HistoryItem> items = new List<HistoryItem>();
+                    IList<IHistoryItem> items = new List<IHistoryItem>();
 
                     foreach (var r in t.Result)
                     {
-                        var newItem = new HistoryItem()
-                            {
-                                Calories = r.Calories,
-                                DisplayName = r.DisplayName,
-                                Distance = r.Distance,
-                                ExerciseType = r.ExerciseType,
-                                Coordinates = new List<ICoordinate>(),
-                                EndTimestamp = r.EndTimestamp,
-                                Id = r.Id,
-                                Pace = r.Pace,
-                                PublishDateTime = r.PublishDateTime,
-                                PublishSuccess = r.PublishSuccess,
-                                StartTimestamp = r.StartTimestamp
-                            };
+                        var newItem = _container.Get<IHistoryItem>();
+
+                        newItem.Calories = r.Calories;
+                        newItem.DisplayName = r.DisplayName;
+                        newItem.Distance = r.Distance;
+                        newItem.ExerciseType = r.ExerciseType;
+                        newItem.Coordinates = new List<ICoordinate>();
+                        newItem.EndTimestamp = r.EndTimestamp;
+                        newItem.Id = r.Id;
+                        newItem.Pace = r.Pace;
+                        newItem.PublishDateTime = r.PublishDateTime;
+                        newItem.PublishSuccess = r.PublishSuccess;
+                        newItem.StartTimestamp = r.StartTimestamp;
+
 
                         _repository.Query<Coordinate>("select * from Coordinate where HistoryItemId=?",
                                                       newItem.Id).ContinueWith(hctask =>
@@ -102,24 +88,10 @@ namespace Exercisr.Domain.Exercise
                         items.Add(newItem);
 
                     }
-                    this.HistoryItems = new List<IHistoryItem>(from i in items select i); //.ToArray();
+                    _historyItems = new List<IHistoryItem>(from i in items select i); //.ToArray();
                     if (OnHistoryItemsChanged != null) OnHistoryItemsChanged(this, this.HistoryItems);
 
                 });
         }
-
-        private class HistoryDBItem
-        {
-            public string DisplayName { get; set; }
-            public DateTime StartTimestamp { get; set; }
-            public DateTime EndTimestamp { get; set; }
-            public int Id { get; set; }
-            public string ExerciseType { get; set; }
-            public double Distance { get; set; }
-            public double Calories { get; set; }
-            public TimeSpan Pace { get; set; }
-            public DateTime PublishDateTime { get; set; }
-            public bool PublishSuccess { get; set; }
-        }
-    }
+   }
 }

@@ -11,6 +11,7 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
+using Exercisr.Contracts.Configuration;
 using Microsoft.Phone.Maps.Controls;
 using Microsoft.Phone.Shell;
 using Exercisr.Contracts.Exercise;
@@ -57,6 +58,17 @@ namespace Exercisr.Domain.ViewModels
         private ILog _log;
         private ILocalize _localize;
         private IApplication _application;
+
+        public IApplication Application
+        {
+            get { return _application; }
+            set
+            {
+                _application = value;
+                Dispatcher("Application");
+            }
+        }
+
         private IGeoPositionWatcher<GeoCoordinate> _coordinateProvider;
 
         private DispatcherTimer _timer = new DispatcherTimer();
@@ -74,8 +86,11 @@ namespace Exercisr.Domain.ViewModels
 
         private IHistory _history;
         private readonly IRepository _repository;
+        private readonly ISettings _settings;
 
-        public TrackingViewModel(ILog log, IAccount account, ILocalize localize, IApplication application, IGeoPositionWatcher<GeoCoordinate> coordinateProvider, IHistory history, IRepository repository)
+        public TrackingViewModel(ILog log, IAccount account, ILocalize localize, IApplication application,
+                                 IGeoPositionWatcher<GeoCoordinate> coordinateProvider, IHistory history,
+                                 IRepository repository, ISettings settings)
         {
             _log = log;
             _localize = localize;
@@ -83,7 +98,8 @@ namespace Exercisr.Domain.ViewModels
             _coordinateProvider = coordinateProvider;
             _history = history;
             _repository = repository;
-            Account = account;        
+            _settings = settings;
+            Account = account;
 
             _started = false;
             _startTime = System.Environment.TickCount;
@@ -94,7 +110,6 @@ namespace Exercisr.Domain.ViewModels
             _timer.Interval = TimeSpan.FromSeconds(1);
             _timer.Tick += Timer_Tick;
 
-            //MapCenter = new GeoCoordinate(coordinateProvider.Position.Location.Latitude, coordinateProvider.Position.Location.Longitude);
             MapCenter = new GeoCoordinate(0, 0);
             Heading = 0;
             ZoomLevel = 15;
@@ -103,6 +118,7 @@ namespace Exercisr.Domain.ViewModels
             LandmarksEnabled = true;
 
             DistanceDisplay = "0 km";
+            if (!_settings.IsMetric) DistanceDisplay = "0 mi";
             PaceDisplay = "00:00";
             CaloriesDisplay = "0";
             TimeDisplay = "00:00";
@@ -118,7 +134,6 @@ namespace Exercisr.Domain.ViewModels
 
         }
 
-
         private void _coordinateProvider_PositionChanged(object sender, GeoPositionChangedEventArgs<GeoCoordinate> e)
         {
 
@@ -131,13 +146,14 @@ namespace Exercisr.Domain.ViewModels
 
                 if (StrokeThickness <= 0) StrokeThickness = 1;
                 GeoCoordinate prev = MapCenter;
-                if (Coordinates.Count > 0) prev = (GeoCoordinate)Coordinates.Last();
+                if (Coordinates.Count > 0) prev = (GeoCoordinate) Coordinates.Last();
                 var previousPoint = prev;
                 var distance = coord.GetDistanceTo(previousPoint);
-                if (distance > 0)
+                if (distance > 1)
                 {
                     _log.InfoFormat("Distance:{0}", distance);
-                    double millisPerKilometer = (1000.0/distance)* (System.Environment.TickCount - _previousPositionChangeTick);
+                    double millisPerKilometer = (1000.0/distance)*
+                                                (System.Environment.TickCount - _previousPositionChangeTick);
 
                     _kilometres += distance/1000.0;
                     if (ZoomLevel < 18) ZoomLevel = 18;
@@ -151,6 +167,13 @@ namespace Exercisr.Domain.ViewModels
                     CaloriesDisplay = string.Format("{0:f0}", Calories);
                     DistanceDisplay = string.Format("{0:f2} km", Distance);
 
+                    if (!_settings.IsMetric)
+                    {
+
+                        DistanceDisplay = string.Format("{0:f2} mi", Distance*0.6214);
+
+                    }
+
                     PositionHandler handler = new PositionHandler();
                     Heading = handler.CalculateBearing(new Position(previousPoint), new Position(coord));
 
@@ -163,7 +186,7 @@ namespace Exercisr.Domain.ViewModels
                             WideContent2 = CaloriesDisplay,
                         });
 
-                    
+
                     this.Coordinates.Add(new Coordinate()
                         {
                             Altitude = coord.Altitude,
@@ -215,8 +238,6 @@ namespace Exercisr.Domain.ViewModels
 
         }
 
-        private ICommand searchCommand;
-
 
         private ICommand startCommand;
 
@@ -231,6 +252,7 @@ namespace Exercisr.Domain.ViewModels
                 return startCommand;
             }
         }
+
         private ICommand stopCommand;
 
         public ICommand StopCommand
@@ -255,65 +277,12 @@ namespace Exercisr.Domain.ViewModels
             ZoomLevel = 15;
             Pitch = 55;
 
-         
-            var activity = WindowsPhone.DI.Container.Current.Get<IActivity>();
-
-            activity.detect_pauses = true;
-            activity.duration = Time.TotalSeconds;
-            activity.total_calories = Calories;
-            activity.total_distance = Distance/1000; //distance is in KM's and we need M's
-            activity.equipment = "None";
-            activity.type = ExerciseType.TypeName;
-            activity.start_time = _startedAt.ToUniversalTime().ToString(DateTimeFormatInfo.CurrentInfo.RFC1123Pattern);
-
-
-            activity.notes = string.Format("I just {0} for ", activity.type.Replace("ing", "ed"));
-            if (Time.TotalHours >= 1)
-            {
-                activity.notes = activity.notes +
-                                 string.Format("{0} hours, ", Time.TotalHours.ToString("0"));
-            }
-            activity.notes = activity.notes +
-                             string.Format(
-                                 "{0} minutes for a distance of {2}, and burned {1} calories!",
-                                 Time.TotalMinutes.ToString("0.0"),
-                                 activity.total_calories.ToString("0.0"),
-                                 activity.total_distance.ToString("0.0"));
-
-            //move to settings
-            activity.post_to_facebook = false;
-            activity.post_to_twitter = false;
-
-            activity.path = new List<IPath>();
-
-            var counter = 0;
-            foreach (var c in Coordinates)
-            {
-                var path = WindowsPhone.DI.Container.Current.Get<IPath>();
-                path.altitude = c.Altitude;
-                path.latitude = c.Latitude;
-                path.longitude = c.Longitude;
-                if (counter == 0)
-                {
-                    path.type = "Start";
-                }
-                else if (counter == Coordinates.Count - 1)
-                {
-                    path.type = "End";
-                }
-                else
-                {
-                    path.type = "gps";
-                }
-
-                activity.path.Add(path);
-                counter++;
-            }
 
             IHistoryItem item = WindowsPhone.DI.Container.Current.Get<IHistoryItem>();
-            item.DisplayName = string.Format("{0} - {1}", ExerciseType.DisplayName, DateTime.Now.ToString(DateTimeFormatInfo.CurrentInfo.RFC1123Pattern));
+            item.DisplayName = string.Format("{0} - {1}", ExerciseType.DisplayName,
+                                             DateTime.Now.ToString(DateTimeFormatInfo.CurrentInfo.RFC1123Pattern));
             item.StartTimestamp = _startedAt;
-            item.ExerciseType = this.ExerciseType.ToString();
+            item.ExerciseType = this.ExerciseType.TypeName;
             item.Coordinates = this.Coordinates;
             item.Calories = this.Calories;
             item.Distance = this.Distance;
@@ -329,24 +298,23 @@ namespace Exercisr.Domain.ViewModels
                                              MessageBoxButton.OKCancel);
                 if (result == MessageBoxResult.OK)
                 {
-                    var publisher = WindowsPhone.DI.Container.Current.Get<IPublishActivity>();
-                    publisher.OnPublishComplete += publisher_OnPublishComplete;
-                    publisher.Publish(activity);
-
+                    item.PublishToRunKeeper();
                 }
             }
+
+
             StartVisibility = (!_started ? Visibility.Visible : Visibility.Collapsed);
             StopVisibility = (_started ? Visibility.Visible : Visibility.Collapsed);
             _paused = false;
 
 
             ShellTile.ActiveTiles.First().Update(new IconicTileData()
-            {
+                {
 
-                Title = _application.ToString(),
-                WideContent1 = "",
-                WideContent2 = "",
-            });
+                    Title = _application.ToString(),
+                    WideContent1 = "",
+                    WideContent2 = "",
+                });
 
         }
 
@@ -362,6 +330,7 @@ namespace Exercisr.Domain.ViewModels
             _startedAt = DateTime.Now;
 
             DistanceDisplay = "0 km";
+            if (!_settings.IsMetric) DistanceDisplay = "0 mi";
             PaceDisplay = "00:00";
             CaloriesDisplay = "0";
             TimeDisplay = "00:00";
@@ -395,16 +364,6 @@ namespace Exercisr.Domain.ViewModels
             }
         }
 
-        public string PublishBody { get; set; }
-
-        private void publisher_OnPublishComplete(IPublishActivity publishActivity, DateTime timestamp, bool success,
-                                                 Exception e, string body)
-        {
-            PublishDateTime = timestamp;
-            PublishSuccess = success;
-            PublishBody = body;
-
-        }
 
 
         private ICommand connectCommand;
@@ -448,9 +407,9 @@ namespace Exercisr.Domain.ViewModels
             PauseVisibility = (!_paused ? Visibility.Visible : Visibility.Collapsed);
             ResumeVisibility = (_paused ? Visibility.Visible : Visibility.Collapsed);
 
-            if(_paused) 
+            if (_paused)
                 _timer.Stop();
-            else 
+            else
                 _timer.Start();
         }
 
@@ -665,6 +624,7 @@ namespace Exercisr.Domain.ViewModels
         }
 
         private Visibility _StopVisibility;
+
         public Visibility StopVisibility
         {
             get { return _StopVisibility; }
@@ -674,7 +634,9 @@ namespace Exercisr.Domain.ViewModels
                 Dispatcher("StopVisibility");
             }
         }
+
         private Visibility _StartVisibility;
+
         public Visibility StartVisibility
         {
             get { return _StartVisibility; }
@@ -684,7 +646,9 @@ namespace Exercisr.Domain.ViewModels
                 Dispatcher("StartVisibility");
             }
         }
+
         private Visibility _PauseVisibility;
+
         public Visibility PauseVisibility
         {
             get { return _PauseVisibility; }
@@ -697,6 +661,7 @@ namespace Exercisr.Domain.ViewModels
 
         public GeoCoordinateCollection UICoordinates { get; set; }
         private Visibility _ResumeVisibility;
+
         public Visibility ResumeVisibility
         {
             get { return _ResumeVisibility; }

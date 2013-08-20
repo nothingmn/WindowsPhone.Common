@@ -28,7 +28,7 @@ namespace Exercisr.Contracts.ViewModels
         ISettings Settings { get; set; }
         ICommand MetricToggleCommand { get; }
         ICommand AutoPostToRunKeeperCommand { get; }
-
+        ICommand PostToRunKeeperCommand { get; }
         
     }
 }

@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Ninject.Parameters;
-using WindowsPhone.Contracts.Core;
+﻿using WindowsPhone.Contracts.Core;
 
-namespace WindowsPhone.DI
+namespace WindowsPhone.Contracts.DI
 {
     public interface IDIContainer
     {
