@@ -50,7 +50,7 @@ namespace WindowsPhone.Common.Communication
                 }
                 else
                 {
-                    System.Threading.Thread.Sleep(100);
+                    await Task.Delay(100);
                 }
             }
         }
